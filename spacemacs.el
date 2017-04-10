@@ -341,8 +341,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; http://blog.binchen.org/posts/easy-indentation-setup-in-emacs-for-web-development.html
   (setq-default c-default-style "bsd")
   (setq-default c-basic-offset 4)
-  ;; 这里设置 tab-width 没有用? 实际变量仍然是 2
-  ;; (setq-default tab-width 4)
 )
 
 (defun dotspacemacs/user-config ()
@@ -353,8 +351,7 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (setq powerline-default-separator 'wave)
-  ;; (setq-default c-basic-offset 4)
-  ;; (setq-default tab-width 4)
+  (setq-default tab-width 4)
   (xterm-mouse-mode -1)
   (define-key evil-hybrid-state-map (kbd "M-n") 'evil-complete-next)
   (define-key evil-hybrid-state-map (kbd "M-p") 'evil-complete-previous)
