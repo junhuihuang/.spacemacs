@@ -64,7 +64,8 @@ values."
             shell-default-position 'bottom)
      (python :variables
              python-test-runner '(nose pytest))
-     go
+     (go :variables
+         go-tab-width 4)
      lua
      html
      javascript
