@@ -58,7 +58,8 @@ values."
      git
      ;; version-control
      ;;; 编程语言 -------
-     markdown
+     (markdown :variables
+               markdown-live-preview-engine 'vmd)
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
@@ -336,7 +337,13 @@ before packages are loaded. If you are unsure, you should try in setting them in
         '("../*/include" "../*/inc" "." "/usr/include" "/usr/local/include/*" "../*/src" "../*/source" "$WXWIN/include"))
 
   (setq helm-move-to-line-cycle-in-source t)
-  )
+
+  ;; http://blog.binchen.org/posts/easy-indentation-setup-in-emacs-for-web-development.html
+  (setq-default c-default-style "bsd")
+  (setq-default c-basic-offset 4)
+  ;; 这里设置 tab-width 没有用? 实际变量仍然是 2
+  ;; (setq-default tab-width 4)
+)
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -346,6 +353,8 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (setq powerline-default-separator 'wave)
+  ;; (setq-default c-basic-offset 4)
+  ;; (setq-default tab-width 4)
   (xterm-mouse-mode -1)
   (define-key evil-hybrid-state-map (kbd "M-n") 'evil-complete-next)
   (define-key evil-hybrid-state-map (kbd "M-p") 'evil-complete-previous)
@@ -471,7 +480,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (molokai-theme solarized-theme nlinum-relative nlinum helm-pydoc helm-gitignore helm-css-scss helm-company helm-c-yasnippet flyspell-correct-helm go-guru go-eldoc company-go go-mode fuzzy company-web web-completion-data company-tern dash-functional tern company-statistics company-c-headers company-anaconda company auto-yasnippet ac-ispell auto-complete flyspell-correct-ivy flyspell-correct auto-dictionary yapfify xterm-color web-mode web-beautify unfill tagedit smeargle slim-mode shell-pop scss-mode sass-mode pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements orgit org-projectile org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow lua-mode livid-mode skewer-mode simple-httpd live-py-mode less-css-mode json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc hy-mode htmlize haml-mode gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help emmet-mode disaster cython-mode coffee-mode cmake-mode clang-format anaconda-mode pythonic counsel swiper ivy helm-gtags ggtags helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag ace-jump-helm-line ws-butler winum which-key wgrep volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline smex restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint ivy-purpose window-purpose imenu-list ivy-hydra info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-make helm helm-core google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word counsel-projectile column-enforce-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile async aggressive-indent adaptive-wrap ace-window ace-link))))
+    (vmd-mode molokai-theme solarized-theme nlinum-relative nlinum helm-pydoc helm-gitignore helm-css-scss helm-company helm-c-yasnippet flyspell-correct-helm go-guru go-eldoc company-go go-mode fuzzy company-web web-completion-data company-tern dash-functional tern company-statistics company-c-headers company-anaconda company auto-yasnippet ac-ispell auto-complete flyspell-correct-ivy flyspell-correct auto-dictionary yapfify xterm-color web-mode web-beautify unfill tagedit smeargle slim-mode shell-pop scss-mode sass-mode pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements orgit org-projectile org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow lua-mode livid-mode skewer-mode simple-httpd live-py-mode less-css-mode json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc hy-mode htmlize haml-mode gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help emmet-mode disaster cython-mode coffee-mode cmake-mode clang-format anaconda-mode pythonic counsel swiper ivy helm-gtags ggtags helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag ace-jump-helm-line ws-butler winum which-key wgrep volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline smex restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint ivy-purpose window-purpose imenu-list ivy-hydra info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-make helm helm-core google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word counsel-projectile column-enforce-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile async aggressive-indent adaptive-wrap ace-window ace-link))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
