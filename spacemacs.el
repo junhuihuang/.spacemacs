@@ -150,7 +150,9 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(spacemacs-dark
-                         spacemacs-light)
+                         spacemacs-light
+                         solarized-light
+                         solarized-dark)
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -353,6 +355,8 @@ you should place your code here."
   (setq powerline-default-separator 'wave)
   (setq-default tab-width 4)
   (xterm-mouse-mode -1)
+  (which-function-mode t)
+
   (define-key evil-hybrid-state-map (kbd "M-n") 'evil-complete-next)
   (define-key evil-hybrid-state-map (kbd "M-p") 'evil-complete-previous)
   (define-key evil-insert-state-map (kbd "M-n") 'evil-complete-next)
