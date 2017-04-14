@@ -375,12 +375,16 @@ you should place your code here."
       "gd" 'ggtags-find-definition
       "gr" 'ggtags-find-reference
       "gt" 'ggtags-find-tag-dwim
-      "go" 'ff-find-other-file)
+      "go" 'ff-find-other-file
+      "bf" 'beginning-of-defun
+      "ef" 'end-of-defun)
     (spacemacs/set-leader-keys-for-major-mode 'c-mode
       "gd" 'ggtags-find-definition
       "gr" 'ggtags-find-reference
       "gt" 'ggtags-find-tag-dwim
-      "go" 'ff-find-other-file)
+      "go" 'ff-find-other-file
+      "bf" 'beginning-of-defun
+      "ef" 'end-of-defun)
     )
 
   ;;;; 行号显示
