@@ -344,6 +344,12 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; http://blog.binchen.org/posts/easy-indentation-setup-in-emacs-for-web-development.html
   (setq-default c-default-style "bsd")
   (setq-default c-basic-offset 4)
+  ;; web development
+  (setq-default js-indent-level 2)  ; js-mode
+  (setq-default js2-basic-offset 2) ; js2-mode, in latest js2-mode, it's alias of js-indent-level
+  (setq-default web-mode-markup-indent-offset 2) ; web-mode, html tag in html file
+  (setq-default web-mode-css-indent-offset 2)    ; web-mode, css in html file
+  (setq-default web-mode-code-indent-offset 2)   ; web-mode, js code in html file
 )
 
 (defun dotspacemacs/user-config ()
