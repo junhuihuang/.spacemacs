@@ -204,7 +204,7 @@ values."
    dotspacemacs-display-default-layout nil
    ;; If non-nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
-   dotspacemacs-auto-resume-layouts nil
+   dotspacemacs-auto-resume-layouts t
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
@@ -383,6 +383,7 @@ you should place your code here."
       "gd" 'ggtags-find-definition
       "gr" 'ggtags-find-reference
       "gt" 'ggtags-find-tag-dwim
+      "gp" 'ggtags-prev-mark
       "go" 'ff-find-other-file
       "bf" 'beginning-of-defun
       "ef" 'end-of-defun)
@@ -390,16 +391,21 @@ you should place your code here."
       "gd" 'ggtags-find-definition
       "gr" 'ggtags-find-reference
       "gt" 'ggtags-find-tag-dwim
+      "gp" 'ggtags-prev-mark
       "go" 'ff-find-other-file
       "bf" 'beginning-of-defun
       "ef" 'end-of-defun)
     )
 
-  ;;;; 行号显示
-  ;;;; https://github.com/syl20bnr/spacemacs/issues/5609
-  (unless (display-graphic-p)
-    (setq linum-format "%4s "))
-
+  ;;;; layout
+  (spacemacs|define-custom-layout "@doc"
+    :binding "d"
+    :body
+    (spacemacs/find-user-init-file))
+  (spacemacs|define-custom-layout "@third"
+    :binding "t"
+    :body
+    (spacemacs/find-user-init-file))
   ;;;; 多窗口高亮 --------------------------------------------------------------
   ;;;; {
   ;; list to store what had been highlighted
@@ -494,7 +500,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (symon yaml-mode vmd-mode molokai-theme solarized-theme nlinum-relative nlinum helm-pydoc helm-gitignore helm-css-scss helm-company helm-c-yasnippet flyspell-correct-helm go-guru go-eldoc company-go go-mode fuzzy company-web web-completion-data company-tern dash-functional tern company-statistics company-c-headers company-anaconda company auto-yasnippet ac-ispell auto-complete flyspell-correct-ivy flyspell-correct auto-dictionary yapfify xterm-color web-mode web-beautify unfill tagedit smeargle slim-mode shell-pop scss-mode sass-mode pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements orgit org-projectile org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow lua-mode livid-mode skewer-mode simple-httpd live-py-mode less-css-mode json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc hy-mode htmlize haml-mode gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help emmet-mode disaster cython-mode coffee-mode cmake-mode clang-format anaconda-mode pythonic counsel swiper ivy helm-gtags ggtags helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag ace-jump-helm-line ws-butler winum which-key wgrep volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline smex restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint ivy-purpose window-purpose imenu-list ivy-hydra info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-make helm helm-core google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word counsel-projectile column-enforce-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile async aggressive-indent adaptive-wrap ace-window ace-link))))
+    (string-inflection go-rename symon yaml-mode vmd-mode molokai-theme solarized-theme nlinum-relative nlinum helm-pydoc helm-gitignore helm-css-scss helm-company helm-c-yasnippet flyspell-correct-helm go-guru go-eldoc company-go go-mode fuzzy company-web web-completion-data company-tern dash-functional tern company-statistics company-c-headers company-anaconda company auto-yasnippet ac-ispell auto-complete flyspell-correct-ivy flyspell-correct auto-dictionary yapfify xterm-color web-mode web-beautify unfill tagedit smeargle slim-mode shell-pop scss-mode sass-mode pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements orgit org-projectile org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow lua-mode livid-mode skewer-mode simple-httpd live-py-mode less-css-mode json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc hy-mode htmlize haml-mode gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help emmet-mode disaster cython-mode coffee-mode cmake-mode clang-format anaconda-mode pythonic counsel swiper ivy helm-gtags ggtags helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag ace-jump-helm-line ws-butler winum which-key wgrep volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline smex restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint ivy-purpose window-purpose imenu-list ivy-hydra info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-make helm helm-core google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word counsel-projectile column-enforce-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile async aggressive-indent adaptive-wrap ace-window ace-link))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
