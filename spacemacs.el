@@ -367,7 +367,7 @@ you should place your code here."
   (setq lua-indent-level 4)
   (setq lua-indent-string-contents nil)
   (xterm-mouse-mode -1)
-  (which-function-mode t)
+  ;; (which-function-mode t)
 
   (define-key evil-hybrid-state-map (kbd "M-n") 'evil-complete-next)
   (define-key evil-hybrid-state-map (kbd "M-p") 'evil-complete-previous)
