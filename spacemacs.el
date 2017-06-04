@@ -52,7 +52,7 @@ values."
                      ispell-alternate-dictionary "~/bin/aspell-conf/english-words.txt"
                      ispell-personal-dictionary "~/bin/aspell-conf/en.pws"
                      spell-checking-enable-by-default nil)
-     syntax-checking
+     ;; syntax-checking
      ;;; 框架 ---------
      react
      ;;; 源码管理 ------
@@ -68,8 +68,7 @@ values."
      (python :variables
              python-test-runner '(nose pytest))
      (go :variables
-         go-tab-width 4
-         go-use-gometalinter t)
+         go-tab-width 4)
      lua
      html
      javascript
