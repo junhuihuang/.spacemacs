@@ -372,6 +372,7 @@ you should place your code here."
 
   (define-key evil-hybrid-state-map (kbd "M-n") 'evil-complete-next)
   (define-key evil-hybrid-state-map (kbd "M-p") 'evil-complete-previous)
+  (define-key evil-hybrid-state-map (kbd "M-y") 'evil-copy-from-above)
   (define-key evil-insert-state-map (kbd "M-n") 'evil-complete-next)
   (define-key evil-insert-state-map (kbd "M-p") 'evil-complete-next)
   (define-key evil-normal-state-map (kbd "C-n") 'next-error)
