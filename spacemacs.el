@@ -354,6 +354,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq-default web-mode-markup-indent-offset 2) ; web-mode, html tag in html file
   (setq-default web-mode-css-indent-offset 2)    ; web-mode, css in html file
   (setq-default web-mode-code-indent-offset 2)   ; web-mode, js code in html file
+
+  (setq hi-lock-face-defaults '("hi-green-b" "hi-red-b" "hi-yellow" "hi-green" "hi-black-hb" "hi-blue-b" "hi-pink" "hi-blue" "hi-black-b"))
 )
 
 (defun dotspacemacs/user-config ()
