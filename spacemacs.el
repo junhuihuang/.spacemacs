@@ -395,6 +395,7 @@ you should place your code here."
   (define-key evil-hybrid-state-map (kbd "M-n") 'evil-complete-next)
   (define-key evil-hybrid-state-map (kbd "M-p") 'evil-complete-previous)
   (define-key evil-hybrid-state-map (kbd "M-y") 'evil-copy-from-above)
+  (define-key evil-hybrid-state-map (kbd "C-w") 'evil-delete-backward-word)
   (define-key evil-insert-state-map (kbd "M-n") 'evil-complete-next)
   (define-key evil-insert-state-map (kbd "M-p") 'evil-complete-next)
   (define-key evil-normal-state-map (kbd "C-n") 'next-error)
@@ -423,6 +424,12 @@ you should place your code here."
       "bf" 'beginning-of-defun
       "ef" 'end-of-defun)
     )
+
+  ;; https://github.com/syl20bnr/spacemacs/issues/4243
+  (with-eval-after-load 'company
+    (define-key company-active-map (kbd "C-w") 'evil-delete-backward-word))
+  (with-eval-after-load 'helm
+    (define-key helm-map (kbd "C-w") 'evil-delete-backward-word))
 
   ;;;; layout
   (spacemacs|define-custom-layout "@doc"
