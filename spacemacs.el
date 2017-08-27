@@ -385,6 +385,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (spacemacs|use-package-add-hook org
     :post-config (add-to-list 'org-babel-load-languages '(ditaa . t)))
 
+  ;; https://github.com/syl20bnr/spacemacs/issues/2705
+  (setq tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
 
 )
 
