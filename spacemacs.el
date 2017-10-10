@@ -420,6 +420,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
     (progn
       (add-to-list 'org-babel-load-languages '(ditaa . t))
       (add-to-list 'org-babel-load-languages '(go . t))))
+
+  (setq imenu-max-item-length 160)
 )
 
 (defun dotspacemacs/user-config ()
