@@ -52,7 +52,7 @@ This function should only modify configuration layer settings."
                      ispell-alternate-dictionary "~/bin/aspell-conf/english-words.txt"
                      ispell-personal-dictionary "~/bin/aspell-conf/en.pws"
                      spell-checking-enable-by-default nil)
-     ;; syntax-checking
+     syntax-checking
      ;;; 框架 ---------
      react
      ;;; 源码管理 ------
@@ -69,6 +69,7 @@ This function should only modify configuration layer settings."
              python-test-runner '(nose pytest))
      (go :variables
          go-tab-width 4)
+         ;;go-use-gometalinter t)
      lua
      html
      javascript
@@ -422,6 +423,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
       (add-to-list 'org-babel-load-languages '(go . t))))
 
   (setq imenu-max-item-length 160)
+  (setq flycheck-gometalinter-deadline "10s")
+  (setq flycheck-gometalinter-fast t)
 )
 
 (defun dotspacemacs/user-config ()
