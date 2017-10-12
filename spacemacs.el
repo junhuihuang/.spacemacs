@@ -399,6 +399,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
     (add-to-list 'web-mode-indentation-params '("lineup-calls . nil")))
 
   (setq js2-strict-missing-semi-warning nil)
+  (setq js2-strict-trailing-comma-warning nil)
 
   (setq hi-lock-face-defaults '("hi-green-b" "hi-red-b" "hi-yellow" "hi-green" "hi-black-hb" "hi-blue-b" "hi-pink" "hi-blue" "hi-black-b"))
 
