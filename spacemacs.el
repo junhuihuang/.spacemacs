@@ -68,8 +68,8 @@ This function should only modify configuration layer settings."
      (python :variables
              python-test-runner '(nose pytest))
      (go :variables
-         go-tab-width 4)
-         ;;go-use-gometalinter t)
+         go-tab-width 4
+         gofmt-command "goimports")
      lua
      html
      javascript
