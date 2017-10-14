@@ -435,11 +435,12 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  (setq powerline-default-separator 'wave)
+  (setq powerline-default-separator 'utf-8)
   (setq-default tab-width 4)
   (setq lua-indent-level 4)
   (setq lua-indent-string-contents nil)
   (xterm-mouse-mode -1)
+  (ido-mode -1)
   ;; (which-function-mode t)
 
   (define-key evil-hybrid-state-map (kbd "M-n") 'evil-complete-next)
