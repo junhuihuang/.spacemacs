@@ -158,7 +158,7 @@ It should only modify the values of Spacemacs settings."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(spacemacs-dark
                          spacemacs-light
-                         solarized-light
+                         monokai
                          solarized-dark)
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -442,7 +442,28 @@ you should place your code here."
   (setq lua-indent-string-contents nil)
   (xterm-mouse-mode -1)
   (ido-mode -1)
-  ;; (which-function-mode t)
+  (which-function-mode t)
+
+  ;; https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-misc.el
+  ;; {{
+  (autoload 'popup-tip "popup")
+
+  (defun my-which-function ()
+    "Return current function name."
+    ;; clean the imenu cache
+    ;; @see http://stackoverflow.com/questions/13426564/how-to-force-a-rescan-in-imenu-by-a-function
+    (setq imenu--index-alist nil)
+    (which-function))
+
+  (defun popup-which-function ()
+    (interactive)
+    (let ((msg (my-which-function)))
+      (popup-tip msg)))
+
+  ;; }}
+  (spaceline-toggle-which-function-off)
+
+  (evil-leader/set-key "w p f" 'popup-which-function)
 
   (define-key evil-hybrid-state-map (kbd "M-n") 'evil-complete-next)
   (define-key evil-hybrid-state-map (kbd "M-p") 'evil-complete-previous)
