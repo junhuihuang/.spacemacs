@@ -140,7 +140,7 @@ It should only modify the values of Spacemacs settings."
    ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
-   dotspacemacs-startup-banner 'official
+   dotspacemacs-startup-banner 'random
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
@@ -627,6 +627,13 @@ clear all highlight"
   (evil-leader/set-key "o p" 'paste-from-clipboard)
   ;; }}
 
+  ;; https://emacs.stackexchange.com/questions/30797/imenu-is-missing-multi-line-golang-function-signatures
+  (defun my-go-mode-hook()
+    (setq imenu-generic-expression
+          '(("type" "^[ \t]*type *\\([^ \t\n\r\f]*[ \t]*\\(struct\\|interface\\)\\)" 1)
+            ("func" "^func *\\(.*\\)" 1)))
+    )
+  (add-hook 'go-mode-hook 'my-go-mode-hook)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
