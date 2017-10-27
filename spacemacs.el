@@ -84,6 +84,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-additional-packages
    '(
      ob-go  ;; Enable org-babel support for Go
+     edit-indirect
     )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -238,7 +239,7 @@ It should only modify the values of Spacemacs settings."
    ;; in all non-asynchronous sources. If set to `source', preserve individual
    ;; source settings. Else, disable fuzzy matching in all sources.
    ;; (default 'always)
-   dotspacemacs-helm-use-fuzzy 'always
+   dotspacemacs-helm-use-fuzzy 'source
    ;; If non-nil, the paste transient-state is enabled. While enabled, pressing
    ;; `p' several times cycles through the elements in the `kill-ring'.
    ;; (default nil)
