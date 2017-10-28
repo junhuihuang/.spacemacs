@@ -382,6 +382,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
         '("../*/include" "../*/inc" "." "/usr/include" "/usr/local/include/*" "../*/src" "../*/source" "$WXWIN/include"))
 
   (setq helm-move-to-line-cycle-in-source t)
+  (setq helm-window-prefer-horizontal-split 'decide)
+  (setq split-width-threshold 80)
   (setq ivy-wrap t)
 
   ;; http://blog.binchen.org/posts/easy-indentation-setup-in-emacs-for-web-development.html
@@ -589,7 +591,7 @@ clear all highlight"
       (when word
         (insert word))))
   (defun my-minibuffer-setup-hook ()
-    (local-set-key (kbd "C-w") 'my-minibuffer-insert-word-at-point))
+    (local-set-key (kbd "C-d") 'my-minibuffer-insert-word-at-point))
 
   (add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
 ;; }}
