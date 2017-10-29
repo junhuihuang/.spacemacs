@@ -505,9 +505,9 @@ you should place your code here."
 
   ;; https://github.com/syl20bnr/spacemacs/issues/4243
   (with-eval-after-load 'company
-    (define-key company-active-map (kbd "C-w") 'evil-delete-backward-word))
+    (define-key company-active-map (kbd "C-w") 'spacemacs/backward-kill-word-or-region))
   (with-eval-after-load 'helm
-    (define-key helm-map (kbd "C-w") 'evil-delete-backward-word))
+    (define-key helm-map (kbd "C-w") 'spacemacs/backward-kill-word-or-region))
 
   ;;;; layout
   (spacemacs|define-custom-layout "@doc"
