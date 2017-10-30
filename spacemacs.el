@@ -383,6 +383,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (setq helm-move-to-line-cycle-in-source t)
   (setq helm-window-prefer-horizontal-split 'decide)
+  (setq helm-switch-to-buffer-ow-vertically 'decide)
   (setq split-width-threshold 80)
   (setq ivy-wrap t)
 
