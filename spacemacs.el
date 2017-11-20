@@ -473,6 +473,9 @@ you should place your code here."
 
   (evil-leader/set-key "w p f" 'popup-which-function)
 
+  ;; https://github.com/syl20bnr/spacemacs/issues/6520
+  (clean-aindent-mode -1)
+
   (define-key evil-hybrid-state-map (kbd "M-n") 'evil-complete-next)
   (define-key evil-hybrid-state-map (kbd "M-p") 'evil-complete-previous)
   (define-key evil-hybrid-state-map (kbd "M-y") 'evil-copy-from-above)
