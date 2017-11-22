@@ -380,6 +380,13 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;;       '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
   ;;         ("org-cn"   . "http://elpa.emacs-china.org/org/")
   ;;         ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
+
+  ;; https://github.com/nashamri/spacemacs-theme
+  (custom-set-variables '(spacemacs-theme-custom-colors
+                          '((bg2 . "#000000")
+                            (highlight . "#5E4E78")
+                            (base . "#CCCCCC"))))
+
   (setq cc-search-directories
         '("../*/include" "../*/inc" "." "/usr/include" "/usr/local/include/*" "../*/src" "../*/source" "$WXWIN/include"))
 
