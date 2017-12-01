@@ -541,8 +541,8 @@ you should place your code here."
   ;; https://github.com/syl20bnr/spacemacs/issues/4243
   (with-eval-after-load 'company
     (define-key company-active-map (kbd "C-w") 'spacemacs/backward-kill-word-or-region))
-  (with-eval-after-load 'helm
-    (define-key helm-map (kbd "C-w") 'spacemacs/backward-kill-word-or-region))
+  ;; (with-eval-after-load 'helm
+  ;;   (define-key helm-map (kbd "C-w") 'spacemacs/backward-kill-word-or-region))
 
   ;;;; layout
   (spacemacs|define-custom-layout "@doc"
@@ -621,7 +621,8 @@ clear all highlight"
         (save-excursion
           (skip-syntax-backward "w_")
           (setq beg (point))
-          (skip-syntax-forward "w_")
+          ;; (skip-syntax-forward "w_ ")
+          (skip-chars-forward "-/_.a-zA-z0-9")
           (setq word (buffer-substring-no-properties beg (point)))))
       (when word
         (insert word))))
