@@ -83,7 +83,6 @@ This function should only modify configuration layer settings."
             c-c++-enable-rtags-support t)
      docker
      (gtags :variables gtags-enable-by-default nil)
-     themes-megapack
      command-log
      )
    ;; List of additional packages that will be installed without being
@@ -175,12 +174,14 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(
-                         spacemacs-dark
-                         spacemacs-light
-                         solarized-light
-                         molokai
-                         solarized-dark)
+   dotspacemacs-themes '(spacemacs-dark
+                         spacemacs-light)
+   ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
+   ;; `all-the-icons', `custom', `vim-powerline' and `vanilla'. The first three
+   ;; are spaceline themes. `vanilla' is default Emacs mode-line. `custom' is a
+   ;; user defined themes, refer to the DOCUMENTATION.org for more info on how
+   ;; to create your own spaceline theme.. (default 'spacemacs)
+   dotspacemacs-mode-line-theme 'spacemacs
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
    dotspacemacs-colorize-cursor-according-to-state t
