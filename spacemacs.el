@@ -551,15 +551,6 @@ you should place your code here."
   (with-eval-after-load 'helm
     (define-key helm-map (kbd "C-c C-w") 'spacemacs/backward-kill-word-or-region))
 
-  ;;;; layout
-  (spacemacs|define-custom-layout "@doc"
-    :binding "d"
-    :body
-    (spacemacs/find-user-init-file))
-  (spacemacs|define-custom-layout "@third"
-    :binding "t"
-    :body
-    (spacemacs/find-user-init-file))
   ;;;; 多窗口高亮 --------------------------------------------------------------
   ;;;; {
   ;; list to store what had been highlighted
