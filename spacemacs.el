@@ -77,7 +77,7 @@ This function should only modify configuration layer settings."
          gofmt-command "goimports")
      lua
      html
-     javascript
+     (javascript :variables javascript-disable-tern-port-files nil)
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode
             c-c++-enable-rtags-support t)
@@ -467,7 +467,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
     :post-config
     (progn
       (add-to-list 'org-babel-load-languages '(ditaa . t))
-      (add-to-list 'org-babel-load-languages '(go . t))))
+      (add-to-list 'org-babel-load-languages '(go . t))
+      (add-to-list 'org-babel-load-languages '(js . t))))
 
   (setq imenu-max-item-length 160)
   (setq flycheck-gometalinter-deadline "10s")
@@ -514,9 +515,12 @@ you should place your code here."
   ;; https://github.com/syl20bnr/spacemacs/issues/6520
   (clean-aindent-mode -1)
 
+  ;; macos not working
+  ;; {
   ;; Chrome as default browser
-  (setq-default browse-url-browser-function 'browse-url-generic
-                browse-url-generic-program "google-chrome")
+  ;; (setq-default browse-url-browser-function 'browse-url-generic
+  ;;               browse-url-generic-program "google-chrome")
+  ;; }
 
   (define-key evil-hybrid-state-map (kbd "M-n") 'evil-complete-next)
   (define-key evil-hybrid-state-map (kbd "M-p") 'evil-complete-previous)
