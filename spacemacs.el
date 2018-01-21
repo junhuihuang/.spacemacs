@@ -77,7 +77,7 @@ This function should only modify configuration layer settings."
          gofmt-command "goimports")
      lua
      html
-     (javascript :variables javascript-disable-tern-port-files nil)
+     javascript
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode
             c-c++-enable-rtags-support t)
