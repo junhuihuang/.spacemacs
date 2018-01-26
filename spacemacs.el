@@ -491,6 +491,37 @@ you should place your code here."
   (ido-mode -1)
   (which-function-mode t)
 
+  ;; {{
+  ;; https://github.com/emacs-helm/helm/issues/1100
+  (defun helm-buffer-switch-new-window (candidate)
+    "Display buffers in new windows."
+    ;; Select the bottom right window
+    ;; (require 'winner)
+    ;; (select-window (car (last (winner-sorted-window-list))))
+    ;; Display buffers in new windows
+    (dolist (buf (helm-marked-candidates))
+      (select-window (split-window-below))
+      (switch-to-buffer buf))
+    ;; (optional) Adjust size of windows
+    (balance-windows))
+
+  (defun helm-file-switch-new-window (candidate)
+    "Open files in new windows."
+    (dolist (buf (helm-marked-candidates))
+      (select-window (split-window-below))
+      (switch-to-buffer (find-file-noselect buf))))
+
+  (add-to-list 'helm-type-buffer-actions
+               '("Display buffer(s) in new window(s)" .
+                 helm-buffer-switch-new-window))
+  (add-to-list 'helm-find-files-actions
+               '("Open file(s) below window(s)" .
+                 helm-file-switch-new-window))
+  (add-to-list 'helm-type-file-actions
+               '("Open file(s) below window(s)" .
+                 helm-file-switch-new-window))
+  ;; }}
+
   ;; https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-misc.el
   ;; {{
   (autoload 'popup-tip "popup")
