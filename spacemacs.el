@@ -546,11 +546,11 @@ you should place your code here."
   ;; https://github.com/syl20bnr/spacemacs/issues/6520
   (clean-aindent-mode -1)
 
-  ;; macos not working
   ;; {
   ;; Chrome as default browser
-  ;; (setq-default browse-url-browser-function 'browse-url-generic
-  ;;               browse-url-generic-program "google-chrome")
+  (cond ((spacemacs/system-is-linux)
+          (setq-default browse-url-browser-function 'browse-url-generic
+                        browse-url-generic-program "google-chrome")))
   ;; }
 
   (define-key evil-hybrid-state-map (kbd "M-n") 'evil-complete-next)
