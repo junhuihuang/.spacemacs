@@ -491,6 +491,10 @@ you should place your code here."
   (ido-mode -1)
   (which-function-mode t)
 
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode))
+  (add-to-list 'auto-mode-alist '("\\.react.js\\'" . rjsx-mode))
+  (add-to-list 'magic-mode-alist '("import React" . rjsx-mode))
+
   ;; {{
   ;; https://github.com/emacs-helm/helm/issues/1100
   (defun helm-buffer-switch-new-window (candidate)
