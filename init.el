@@ -29,24 +29,19 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(nginx
-     graphviz
-     plantuml
-     sql
+   '(
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     helm
-     auto-completion
+
      ;;; Emacs ---------
+     helm
      org
      better-defaults
-     (emacs-lisp :variables emacs-lisp-hide-namespace-prefix nil)
-     ;;; 插件 ---------
-     (gtags :disabled-for clojure emacs-lisp javascript latex python shell-scripts)
-     ;;; 检查器 -------
+     ;;; 编辑器 -------
+     auto-completion
      (spell-checking :variables
                      ispell-program-name "aspell"
                      ispell-dictionary "american"
@@ -62,13 +57,14 @@ This function should only modify configuration layer settings."
      ;;                  version-control-global-margin t
      ;;                  version-control-diff-tool 'git-gutter
      ;;                  version-control-global-margin t)
+     ;;; 编程语言 -------
+     sql
+     (emacs-lisp :variables emacs-lisp-hide-namespace-prefix nil)
+     plantuml
+     graphviz
      yaml
      (markdown :variables
                markdown-live-preview-engine 'vmd)
-     ;;; 编程语言 -------
-     (shell :variables
-            shell-default-height 30
-            shell-default-position 'bottom)
      shell-scripts
      (python :variables
              python-test-runner '(nose pytest))
@@ -81,6 +77,11 @@ This function should only modify configuration layer settings."
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode
             c-c++-enable-rtags-support t)
+     ;;; 工具 --------
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom)
+     nginx
      docker
      (gtags :variables gtags-enable-by-default nil)
      command-log
@@ -153,7 +154,7 @@ It should only modify the values of Spacemacs settings."
    ;; (default 'vim)
    dotspacemacs-editing-style 'hybrid
    ;; If non-nil output loading progress in `*Messages*' buffer. (default nil)
-   dotspacemacs-verbose-loading nil
+   dotspacemacs-verbose-loading t
    ;; Specify the startup banner. Default value is `official', it displays
    ;; the official spacemacs logo. An integer value is the index of text
    ;; banner, `random' chooses a random text banner in `core/banners'
@@ -218,7 +219,7 @@ It should only modify the values of Spacemacs settings."
    ;; and TAB or `C-m' and `RET'.
    ;; In the terminal, these pairs are generally indistinguishable, so this only
    ;; works in the GUI. (default nil)
-   dotspacemacs-distinguish-gui-tab nil
+   dotspacemacs-distinguish-gui-tab t
    ;; If non-nil `Y' is remapped to `y$' in Evil states. (default nil)
    dotspacemacs-remap-Y-to-y$ nil
    ;; If non-nil, the shift mappings `<' and `>' retain visual state if used

@@ -5,6 +5,5 @@ the mini customization for spacemacs
 ```sh
 cd ~
 git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
-git clone https://github.com/stevenswong/.spacemacs.git myspacemacs
-ln -sf myspacemacs/spacemacs.el .spacemacs
+git clone https://github.com/stevenswong/.spacemacs.git ~/.spacemacs.d
 ```
