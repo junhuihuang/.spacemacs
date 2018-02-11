@@ -828,6 +828,15 @@ clear all highlight"
   (defun go-packages-gopkgs ()
     "Return a list of all Go packages, using 'gopkgs'."
     (process-lines "gopkgs"))
+
+  (defun layout-double-columns-focus ()
+    " Set the layout to double columns and focus"
+    (interactive)
+    (delete-other-windows)
+    (split-window-right)
+    (select-window (winum-get-window-by-number 2)))
+
+  (evil-leader/set-key "o 2" 'layout-double-columns-focus)
   )
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
