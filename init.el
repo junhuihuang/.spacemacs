@@ -791,9 +791,9 @@ clear all highlight"
   (evil-leader/set-key "o p" 'paste-from-clipboard)
   ;; }}
   (evil-leader/set-key "o h" 'symbol-overlay-put)
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "m") 'symbol-overlay-put)
-    (setq symbol-overlay-map map))
+  ;; (let ((map (make-sparse-keymap)))
+  ;;   (define-key map (kbd "m") 'symbol-overlay-put)
+  ;;   (setq symbol-overlay-map map))
 
   ;; https://emacs.stackexchange.com/questions/30797/imenu-is-missing-multi-line-golang-function-signatures
   (defun my-go-mode-hook()
