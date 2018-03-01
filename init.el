@@ -599,15 +599,16 @@ you should place your code here."
       (select-window (split-window-below))
       (switch-to-buffer (find-file-noselect buf))))
 
-  (add-to-list 'helm-type-buffer-actions
-               '("Display buffer(s) in new window(s)" .
-                 helm-buffer-switch-new-window))
-  (add-to-list 'helm-find-files-actions
-               '("Open file(s) below window(s)" .
-                 helm-file-switch-new-window))
-  (add-to-list 'helm-type-file-actions
-               '("Open file(s) below window(s)" .
-                 helm-file-switch-new-window))
+  (with-eval-after-load 'helm
+    (add-to-list 'helm-type-buffer-actions
+                 '("Display buffer(s) in new window(s)" .
+                   helm-buffer-switch-new-window))
+    (add-to-list 'helm-find-files-actions
+                 '("Open file(s) below window(s)" .
+                   helm-file-switch-new-window))
+    (add-to-list 'helm-type-file-actions
+                 '("Open file(s) below window(s)" .
+                   helm-file-switch-new-window)))
   ;; }}
 
   ;; https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-misc.el
