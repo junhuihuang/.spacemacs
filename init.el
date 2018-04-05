@@ -856,7 +856,8 @@ clear all highlight"
 
   (add-hook 'protobuf-mode-hook
             (lambda () (c-add-style "my-style" my-protobuf-style t)))
-  (add-hook 'protobuf-mode-hook 'electric-pair-mode)
+
+  (add-hook 'protobuf-mode-hook 'smartparens-mode)
 
   (add-to-list 'spacemacs-large-file-modes-list 'tags-table-mode)
   )
