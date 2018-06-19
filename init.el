@@ -660,7 +660,7 @@ before packages are loaded."
       (popup-tip msg)))
 
   ;; }}
-  ;; (spaceline-toggle-which-function-off)
+  (spaceline-toggle-which-function-off)
 
   (evil-leader/set-key "w p f" 'popup-which-function)
 
