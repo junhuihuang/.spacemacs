@@ -891,6 +891,9 @@ clear all highlight"
 
   (add-hook 'protobuf-mode-hook 'smartparens-mode)
 
+  (add-hook 'lsp-ui-mode-hook
+            (lambda () (lsp-ui-doc-mode -1)))
+
   (add-to-list 'spacemacs-large-file-modes-list 'tags-table-mode)
   )
 (defun dotspacemacs/emacs-custom-settings ()
