@@ -12,6 +12,7 @@ http_proxy=http://127.0.0.1:8118 https_proxy=http://127.0.0.1:8118 go get -u -v 
 http_proxy=http://127.0.0.1:8118 https_proxy=http://127.0.0.1:8118 go get -u -v github.com/haya14busa/gopkgs/cmd/gopkgs
 http_proxy=http://127.0.0.1:8118 https_proxy=http://127.0.0.1:8118 go get -u -v github.com/davidrjenni/reftools/cmd/fillstruct
 http_proxy=http://127.0.0.1:8118 https_proxy=http://127.0.0.1:8118 go get -u -v github.com/josharian/impl
+http_proxy=http://127.0.0.1:8118 https_proxy=http://127.0.0.1:8118 go get -u -v github.com/godoctor/godoctor
 
 http_proxy=http://127.0.0.1:8118 https_proxy=http://127.0.0.1:8118 go get -u -v github.com/alecthomas/gometalinter
 http_proxy=http://127.0.0.1:8118 https_proxy=http://127.0.0.1:8118 go get -u -v github.com/onsi/gomega
