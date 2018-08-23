@@ -85,6 +85,7 @@ This function should only modify configuration layer settings."
      javascript
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode
+            c-c++-enable-clang-support t
             c-c++-enable-rtags-support t
             c-c++-enable-clang-format-on-save t
             c-c++-enable-google-style t)
