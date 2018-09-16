@@ -118,7 +118,6 @@ This function should only modify configuration layer settings."
      fzf
      (helm-ag :location (recipe :fetcher github :repo "junhuihuang/emacs-helm-ag"))
      (symbol-overlay :location (recipe :fetcher github :repo "wolray/symbol-overlay"))
-     (rjsx-mode :location (recipe :fetcher github :repo "felipeochoa/rjsx-mode"))
      go-playground
      rust-playground
     )
@@ -150,7 +149,7 @@ It should only modify the values of Spacemacs settings."
    ;; to compile Emacs 27 from source following the instructions in file
    ;; EXPERIMENTAL.org at to root of the git repository.
    ;; (default nil)
-   dotspacemacs-enable-emacs-pdumper t
+   dotspacemacs-enable-emacs-pdumper nil
 
    ;; File path pointing to emacs 27.1 executable compiled with support
    ;; for the portable dumper (this is currently the branch pdumper).
@@ -701,7 +700,20 @@ before packages are loaded."
   (with-eval-after-load 'helm
     (define-key helm-map (kbd "C-c C-w") 'spacemacs/backward-kill-word-or-region)
     (define-key helm-map (kbd "C-c C-r") 'helm-show-kill-ring)
-    (define-key helm-map (kbd "C-k") 'kill-line))
+    (define-key helm-map (kbd "C-k") 'kill-line)
+    (define-key helm-map (kbd "C-c C-c") 'helm-xclipboard-copy))
+
+  (defun helm-xclipboard-copy (arg)
+    "copy text in helm minibuffer"
+    (interactive "P")
+    (with-helm-alive-p
+      (helm-run-after-exit
+       (lambda (sel)
+         (when (spacemacs/system-is-mac) (shell-command (format "echo -n %s | pbcopy" (shell-quote-argument sel))))
+         (when (spacemacs/system-is-linux) (shell-command (format "echo -n %s | xsel -ib" (shell-quote-argument sel))))
+         (prog1 nil (message "Copied to clipboard: %s" sel) (sit-for 1)))
+       (format "%s" (helm-get-selection nil (not arg))))))
+  (put 'helm-xclipboard-copy 'helm-only t)
 
   (with-eval-after-load 'go-playground
     (define-key go-playground-mode-map (kbd "C-c C-c") 'go-playground-exec))
@@ -910,7 +922,8 @@ This function is called at the very end of Spacemacs initialization."
          label))
       (cdr toc-structure))))
  '(package-selected-packages
-   '(yasnippet-snippets yapfify string-inflection rjsx-mode pyvenv org-download lsp-ui impatient-mode helm-company flycheck-rust fish-mode editorconfig dante lcr counsel-projectile counsel ivy company-lsp iedit smartparens rtags helm helm-core flycheck lsp-mode markdown-mode alert projectile magit dash org-plus-contrib yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org tagedit symon symbol-overlay swiper sql-indent spaceline-all-the-icons smeargle slim-mode shell-pop scss-mode sass-mode rust-playground restart-emacs rainbow-delimiters racer pytest pyenv-mode py-isort pug-mode protobuf-mode prettier-js popwin plantuml-mode pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer orgit org-projectile org-present org-pomodoro org-mime org-bullets org-brain open-junk-file ob-go nginx-mode neotree nameless mwim multi-term move-text markdown-toc magit-svn magit-gitflow macrostep lsp-python lsp-javascript-typescript lsp-go lorem-ipsum log4e livid-mode live-py-mode link-hint json-navigator js2-refactor js-doc intero insert-shebang indent-guide importmagic hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-hoogle helm-gtags helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-c-yasnippet helm-ag haskell-snippets graphviz-dot-mode google-translate google-c-style golden-ratio godoctor go-tag go-rename go-playground go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gntp gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-commit ghub gh-md ggtags fzf fuzzy font-lock+ flyspell-correct-helm flycheck-rtags flycheck-pos-tip flycheck-haskell flycheck-bashate flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav edit-indirect dumb-jump dotenv-mode doom-modeline dockerfile-mode docker disaster diminish define-word cython-mode csv-mode company-web company-tern company-statistics company-shell company-rtags company-lua company-go company-ghci company-ghc company-cabal company-c-headers company-anaconda command-log-mode column-enforce-mode cmm-mode clean-aindent-mode clang-format centered-cursor-mode cargo auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-window ace-link ace-jump-helm-line ac-ispell)))
+   (quote
+    (yasnippet-snippets yapfify web-mode toc-org symbol-overlay string-inflection rjsx-mode pyvenv plantuml-mode org-download lsp-ui lsp-go live-py-mode impatient-mode helm-projectile helm-company flycheck-rust fish-mode expand-region evil-matchit evil-escape evil-args editorconfig dumb-jump doom-modeline dockerfile-mode docker dante lcr counsel-projectile counsel swiper ivy company-c-headers cargo ace-window iedit smartparens flyspell-correct rtags helm helm-core haskell-mode company flycheck multiple-cursors avy typescript-mode lsp-mode markdown-mode alert projectile magit git-commit ghub treepy graphql dash evil org-plus-contrib yaml-mode xterm-color ws-butler with-editor winum which-key web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package unfill undo-tree toml-mode tagedit tablist symon sql-indent spaceline-all-the-icons smeargle slim-mode shrink-path shell-pop scss-mode sass-mode rust-playground restart-emacs rainbow-delimiters racer pytest pyenv-mode py-isort pug-mode protobuf-mode prettier-js popwin pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer orgit org-projectile org-present org-pomodoro org-mime org-bullets org-brain open-junk-file ob-go nginx-mode neotree nameless mwim multi-term move-text markdown-toc magit-svn magit-gitflow macrostep lsp-python lsp-javascript-typescript lorem-ipsum log4e livid-mode link-hint json-navigator json-mode js2-refactor js-doc intero insert-shebang indent-guide importmagic hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-mode-manager helm-make helm-hoogle helm-gtags helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-c-yasnippet helm-ag haskell-snippets graphviz-dot-mode goto-chg google-translate google-c-style golden-ratio godoctor go-tag go-rename go-playground go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gntp gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md ggtags fzf fuzzy font-lock+ flyspell-correct-helm flycheck-rtags flycheck-pos-tip flycheck-haskell flycheck-bashate flx-ido fill-column-indicator fancy-battery eyebrowse evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-ediff evil-cleverparens evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav eldoc-eval edit-indirect dotenv-mode docker-tramp disaster diminish define-word cython-mode csv-mode company-web company-tern company-statistics company-shell company-rtags company-lua company-lsp company-go company-ghci company-ghc company-cabal company-anaconda command-log-mode column-enforce-mode cmm-mode clean-aindent-mode clang-format centered-cursor-mode auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
