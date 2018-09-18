@@ -593,7 +593,7 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-  (setq powerline-default-separator 'utf-8)
+  ;; (setq powerline-default-separator 'utf-8)
   (setq-default tab-width 4)
   (setq lua-indent-level 4)
   (setq lua-indent-string-contents nil)
