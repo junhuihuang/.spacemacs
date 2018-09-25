@@ -580,6 +580,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq-default evil-escape-key-sequence "kj")
 
   (setq tags-add-tables t)
+
+  (setq dumb-jump-prefer-searcher 'rg)
 )
 
 (defun dotspacemacs/user-load ()
