@@ -582,6 +582,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq tags-add-tables t)
 
   (setq dumb-jump-prefer-searcher 'rg)
+
+  (setq helm-grep-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")
 )
 
 (defun dotspacemacs/user-load ()
