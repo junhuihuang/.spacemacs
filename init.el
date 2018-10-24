@@ -949,6 +949,13 @@ clear all highlight"
             (switch-to-buffer filebuffer)                                    ; simply switch
           (view-file file))                                                    ; ... view it
         (other-window -1))))                   ; give the attention back to the dired buffer
+
+  ;; https://emacs-china.org/t/topic/1549/3
+  (defun markdown-to-html()
+    (interactive)
+    (start-process "grip" "*gfm-to-html*" "grip" (buffer-file-name) "5180")
+    (browse-url (format "http://localhost:5180/%s.%s"
+                        (file-name-base) (file-name-extension (buffer-file-name)))))
   )
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
