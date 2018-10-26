@@ -49,7 +49,7 @@ This function should only modify configuration layer settings."
      (spell-checking :variables
                      ispell-program-name "aspell"
                      ispell-dictionary "american"
-                     enable-flyspell-auto-completion t
+                     ispell-personal-dictionary "~/.spacemacs.d/.aspell.en.pws"
                      spell-checking-enable-by-default t)
      syntax-checking
      lsp
