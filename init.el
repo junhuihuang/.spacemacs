@@ -79,7 +79,8 @@ This function should only modify configuration layer settings."
          go-format-before-save t
          godoc-at-point-function 'godoc-gogetdoc)
      (rust :variables
-           rust-format-on-save t)
+           rust-format-on-save t
+           rust-backend 'lsp)
      lua
      html
      javascript
@@ -904,10 +905,6 @@ clear all highlight"
 
   (add-hook 'lsp-ui-mode-hook
             (lambda () (lsp-ui-doc-mode -1)))
-
-  (with-eval-after-load 'lsp-mode
-    (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls"))
-    (require 'lsp-rust))
 
   (add-to-list 'spacemacs-large-file-modes-list 'tags-table-mode)
 
