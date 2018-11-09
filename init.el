@@ -89,7 +89,8 @@ This function should only modify configuration layer settings."
             c-c++-enable-clang-support t
             c-c++-enable-rtags-support t
             c-c++-enable-clang-format-on-save t
-            c-c++-enable-google-style t)
+            c-c++-enable-google-style t
+            c-c++-enable-c++11 t)
      haskell
      protobuf
      csv
