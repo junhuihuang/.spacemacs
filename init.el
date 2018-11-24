@@ -587,8 +587,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq helm-grep-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")
   ;; add remote host PATH
   ;; https://github.com/lujun9972/lujun9972.github.com/blob/source/Emacs%E4%B9%8B%E6%80%92/%E5%A6%82%E4%BD%95%E8%AE%A9Tramp%E6%94%AF%E6%8C%81%E8%AE%BF%E9%97%AETermux.org
-  (setq tramp-remote-path '(,@tramp-remote-path tramp-own-remote-path))
-
+  (with-eval-after-load 'tramp-sh
+    (add-to-list tramp-remote-path 'tramp-own-remote-path))
 )
 
 (defun dotspacemacs/user-load ()
