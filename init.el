@@ -50,7 +50,7 @@ This function should only modify configuration layer settings."
                      ispell-program-name "aspell"
                      ispell-dictionary "american"
                      ispell-personal-dictionary "~/.spacemacs.d/.aspell.en.pws"
-                     spell-checking-enable-by-default t)
+                     spell-checking-enable-by-default nil)
      syntax-checking
      lsp
      ;;; 框架 ---------
@@ -67,7 +67,7 @@ This function should only modify configuration layer settings."
      plantuml
      graphviz
      yaml
-     (markdown :packages (not mmm-mode)
+     (markdown
                :variables markdown-live-preview-engine 'vmd)
      shell-scripts
      (python :variables
@@ -124,6 +124,7 @@ This function should only modify configuration layer settings."
      go-playground
      rust-playground
      lsp-rust
+     color-identifiers-mode
     )
 
    ;; A list of packages that cannot be updated.
@@ -585,10 +586,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq dumb-jump-prefer-searcher 'rg)
 
   (setq helm-grep-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")
-  ;; add remote host PATH
-  ;; https://github.com/lujun9972/lujun9972.github.com/blob/source/Emacs%E4%B9%8B%E6%80%92/%E5%A6%82%E4%BD%95%E8%AE%A9Tramp%E6%94%AF%E6%8C%81%E8%AE%BF%E9%97%AETermux.org
-  (with-eval-after-load 'tramp-sh
-    (add-to-list tramp-remote-path 'tramp-own-remote-path))
+
+  (add-hook 'after-init-hook 'global-color-identifiers-mode)
 )
 
 (defun dotspacemacs/user-load ()
