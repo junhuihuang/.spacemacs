@@ -124,7 +124,6 @@ This function should only modify configuration layer settings."
      go-playground
      rust-playground
      lsp-rust
-     color-identifiers-mode
     )
 
    ;; A list of packages that cannot be updated.
@@ -586,8 +585,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq dumb-jump-prefer-searcher 'rg)
 
   (setq helm-grep-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")
-
-  (add-hook 'after-init-hook 'global-color-identifiers-mode)
 )
 
 (defun dotspacemacs/user-load ()
