@@ -70,6 +70,7 @@ This function should only modify configuration layer settings."
      (markdown
                :variables markdown-live-preview-engine 'vmd)
      shell-scripts
+     ipython-notebook
      (python :variables
              python-enable-yapf-format-on-save t
              python-test-runner '(nose pytest))
@@ -80,7 +81,7 @@ This function should only modify configuration layer settings."
          godoc-at-point-function 'godoc-gogetdoc)
      (rust :variables
            rust-format-on-save t
-           rust-backend 'lsp)
+           rust-backend 'racer)
      lua
      html
      javascript
@@ -123,7 +124,6 @@ This function should only modify configuration layer settings."
      (symbol-overlay :location (recipe :fetcher github :repo "wolray/symbol-overlay"))
      go-playground
      rust-playground
-     lsp-rust
     )
 
    ;; A list of packages that cannot be updated.
@@ -904,9 +904,6 @@ clear all highlight"
 
   (add-hook 'protobuf-mode-hook 'smartparens-mode)
 
-  (add-hook 'lsp-ui-mode-hook
-            (lambda () (lsp-ui-doc-mode -1)))
-
   (add-to-list 'spacemacs-large-file-modes-list 'tags-table-mode)
 
   (add-hook 'prog-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
@@ -977,7 +974,7 @@ This function is called at the very end of Spacemacs initialization."
          label))
       (cdr toc-structure))))
  '(package-selected-packages
-   '(flyspell-popup yasnippet-snippets yapfify yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package unfill toml-mode toc-org tagedit symon symbol-overlay string-inflection sql-indent spaceline-all-the-icons smeargle slim-mode shell-pop scss-mode sass-mode rust-playground rjsx-mode restart-emacs rainbow-delimiters racer pyvenv pytest pyenv-mode py-isort pug-mode protobuf-mode prettier-js popwin plantuml-mode pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file ob-rust ob-go nginx-mode neotree nameless mwim multi-term move-text markdown-toc magit-svn magit-gitflow macrostep lsp-ui lsp-rust lsp-python lsp-javascript-typescript lsp-go lorem-ipsum livid-mode live-py-mode link-hint json-navigator js2-refactor js-doc intero insert-shebang indent-guide importmagic impatient-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-hoogle helm-gtags helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets graphviz-dot-mode google-translate google-c-style golden-ratio godoctor go-tag go-rename go-playground go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md ggtags fzf fuzzy font-lock+ flyspell-correct-helm flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-haskell flycheck-bashate flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig edit-indirect dumb-jump dotenv-mode doom-modeline dockerfile-mode docker disaster diminish define-word dante cython-mode csv-mode counsel-projectile company-web company-tern company-statistics company-shell company-rtags company-lua company-lsp company-go company-ghci company-ghc company-cabal company-c-headers company-anaconda command-log-mode column-enforce-mode cmm-mode clean-aindent-mode clang-format centered-cursor-mode cargo auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-window ace-link ace-jump-helm-line ac-ispell)))
+   '(ob-ipython ein request-deferred websocket yasnippet-snippets yapfify yaml-mode xterm-color ws-butler writeroom-mode winum which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe uuidgen use-package unfill treemacs-projectile treemacs-evil toml-mode toc-org tagedit symon symbol-overlay string-inflection sql-indent spaceline-all-the-icons smeargle slim-mode shell-pop scss-mode sass-mode rust-playground rjsx-mode restart-emacs rainbow-delimiters racer pyvenv pytest pyenv-mode py-isort pug-mode protobuf-mode prettier-js popwin plantuml-mode pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file ob-rust ob-go nginx-mode nameless mwim multi-term move-text mmm-mode markdown-toc magit-svn magit-gitflow macrostep lsp-ui lsp-rust lorem-ipsum livid-mode live-py-mode link-hint json-navigator js2-refactor js-doc insert-shebang indent-guide importmagic impatient-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-hoogle helm-gtags helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets graphviz-dot-mode google-translate google-c-style golden-ratio godoctor go-tag go-rename go-playground go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md ggtags fzf fuzzy font-lock+ flyspell-correct-helm flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-haskell flycheck-bashate flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav editorconfig edit-indirect dumb-jump dotenv-mode doom-modeline dockerfile-mode docker disaster diminish define-word cython-mode csv-mode cquery counsel-projectile company-web company-tern company-statistics company-shell company-rtags company-lua company-lsp company-go company-ghci company-cabal company-c-headers company-anaconda command-log-mode column-enforce-mode cmm-mode clean-aindent-mode clang-format centered-cursor-mode ccls cargo auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
