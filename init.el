@@ -78,6 +78,7 @@ This function should only modify configuration layer settings."
          go-tab-width 4
          gofmt-command "goimports"
          go-format-before-save t
+         go-backend 'lsp
          godoc-at-point-function 'godoc-gogetdoc)
      (rust :variables
            rust-format-on-save t
@@ -85,13 +86,16 @@ This function should only modify configuration layer settings."
      lua
      html
      javascript
+     typescript
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode
-            c-c++-enable-clang-support t
-            c-c++-enable-rtags-support t
+            ;; c-c++-enable-clang-support t
             c-c++-enable-clang-format-on-save t
+            ;; c-c++-enable-rtags-support t
+            ;; c-c++-enable-rtags-completion nil
             c-c++-enable-google-style t
-            c-c++-enable-c++11 t)
+            c-c++-enable-c++11 t
+            c-c++-backend 'lsp-ccls)
      haskell
      protobuf
      csv
@@ -101,7 +105,7 @@ This function should only modify configuration layer settings."
             shell-default-position 'bottom)
      nginx
      docker
-     (gtags :variables gtags-enable-by-default nil)
+     ;; gtags
      command-log
      xclipboard
      tern
@@ -118,12 +122,13 @@ This function should only modify configuration layer settings."
    '(
      ob-go  ;; Enable org-babel support for Go
      ob-rust
-     edit-indirect
      fzf
      (helm-ag :location (recipe :fetcher github :repo "junhuihuang/emacs-helm-ag"))
      (symbol-overlay :location (recipe :fetcher github :repo "wolray/symbol-overlay"))
+     (elpy :location (recipe :fetcher github :repo "jorgenschaefer/elpy"))
      go-playground
      rust-playground
+     edit-indirect
     )
 
    ;; A list of packages that cannot be updated.
@@ -189,7 +194,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil then Spacelpa repository is the primary source to install
    ;; a locked version of packages. If nil then Spacemacs will install the
    ;; latest version of packages from MELPA. (default nil)
-   dotspacemacs-use-spacelpa t
+   dotspacemacs-use-spacelpa nil
 
    ;; If non-nil then verify the signature for downloaded Spacelpa archives.
    ;; (default nil)
@@ -686,25 +691,6 @@ before packages are loaded."
 
   (define-key evil-motion-state-map (kbd "%") 'evilmi-jump-items)
 
-  (progn
-    (spacemacs/set-leader-keys-for-major-mode 'c++-mode
-      "gd" 'ggtags-find-definition
-      "gr" 'ggtags-find-reference
-      "gt" 'ggtags-find-tag-dwim
-      "gp" 'ggtags-prev-mark
-      "go" 'ff-find-other-file
-      "bf" 'beginning-of-defun
-      "ef" 'end-of-defun)
-    (spacemacs/set-leader-keys-for-major-mode 'c-mode
-      "gd" 'ggtags-find-definition
-      "gr" 'ggtags-find-reference
-      "gt" 'ggtags-find-tag-dwim
-      "gp" 'ggtags-prev-mark
-      "go" 'ff-find-other-file
-      "bf" 'beginning-of-defun
-      "ef" 'end-of-defun)
-    )
-
   ;; https://github.com/syl20bnr/spacemacs/issues/4243
   (with-eval-after-load 'company
     (define-key company-active-map (kbd "C-w") 'spacemacs/backward-kill-word-or-region))
@@ -810,7 +796,7 @@ clear all highlight"
 
   ;; {{
   ;; https://github.com/syl20bnr/spacemacs/issues/2222
-  (defun copy-to-clipboard()
+  (defun copy-to-remote-imac-clipboard()
     "Copies selection to x-clipboard."
     (interactive)
     (if (display-graphic-p)
@@ -820,10 +806,7 @@ clear all highlight"
           )
       (if (region-active-p)
           (progn
-            (when (spacemacs/system-is-mac)
-                (shell-command-on-region (region-beginning) (region-end) "pbcopy"))
-            (when (spacemacs/system-is-linux)
-                (shell-command-on-region (region-beginning) (region-end) "xsel -i -b"))
+            (shell-command-on-region (region-beginning) (region-end) "ssh imac pbcopy")
             (message "Yanked region to clipboard!")
             (deactivate-mark))
         (message "No region active; can't yank to clipboard!")))
@@ -840,7 +823,7 @@ clear all highlight"
       (when (spacemacs/system-is-linux) (insert (shell-command-to-string "xsel -o -b")))
       )
     )
-  (evil-leader/set-key "o y" 'copy-to-clipboard)
+  (evil-leader/set-key "o y" 'copy-to-remote-imac-clipboard)
   (evil-leader/set-key "o p" 'paste-from-clipboard)
   ;; }}
   (evil-leader/set-key "o h" 'symbol-overlay-put)
@@ -951,6 +934,8 @@ clear all highlight"
     (start-process "grip" "*gfm-to-html*" "grip" (buffer-file-name) "5180")
     (browse-url (format "http://localhost:5180/%s.%s"
                         (file-name-base) (file-name-extension (buffer-file-name)))))
+
+  (elpy-enable)
   )
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
