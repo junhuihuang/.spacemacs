@@ -936,6 +936,8 @@ clear all highlight"
                         (file-name-base) (file-name-extension (buffer-file-name)))))
 
   (elpy-enable)
+  (add-hook 'lsp-ui-mode-hook
+            (lambda () (lsp-ui-doc-mode -1) (lsp-ui-sideline-mode -1)))
   )
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
