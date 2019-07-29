@@ -125,6 +125,8 @@ This function should only modify configuration layer settings."
      fzf
      (helm-ag :location (recipe :fetcher github :repo "junhuihuang/emacs-helm-ag"))
      (symbol-overlay :location (recipe :fetcher github :repo "wolray/symbol-overlay"))
+     ;; helm-swoop-edit is broken, see: https://github.com/ShingoFukuyama/helm-swoop/issues/133
+     (helm-swoop :location (recipe :fetcher github :repo "ashiklom/helm-swoop"))
      (elpy :location (recipe :fetcher github :repo "jorgenschaefer/elpy"))
      go-playground
      rust-playground
@@ -533,6 +535,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq helm-window-prefer-horizontal-split 'decide)
   (setq helm-switch-to-buffer-ow-vertically 'decide)
   (setq split-width-threshold 160)
+  (setq split-height-threshold nil)
   (setq ivy-wrap t)
 
   ;; http://blog.binchen.org/posts/easy-indentation-setup-in-emacs-for-web-development.html
