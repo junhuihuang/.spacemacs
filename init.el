@@ -78,7 +78,8 @@ This function should only modify configuration layer settings."
          gofmt-command "goimports"
          go-format-before-save t
          go-backend 'lsp
-         godoc-at-point-function 'godoc-gogetdoc)
+         godoc-at-point-function 'godoc-gogetdoc
+         go-use-golangci-lint t)
      (rust :variables
            rust-format-on-save t
            rust-backend 'racer)
