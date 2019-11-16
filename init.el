@@ -41,7 +41,7 @@ This function should only modify configuration layer settings."
 
      ;;; Emacs ---------
      helm
-     org
+     (org :variables org-enable-github-support t)
      better-defaults
      ;;; 编辑器 -------
      auto-completion
@@ -105,6 +105,7 @@ This function should only modify configuration layer settings."
             shell-default-position 'bottom)
      nginx
      docker
+     pandoc
      ;; gtags
      command-log
      xclipboard
@@ -533,6 +534,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; https://github.com/ardumont/markdown-toc
   ;; (custom-set-variables
   ;;  '(markdown-toc-user-toc-structure-manipulation-fn 'cdr))
+  (setq package-check-signature nil)
   (custom-set-variables '(markdown-toc-user-toc-structure-manipulation-fn
                           (lambda (toc-structure)
                             (--map (-let (((level . label) it))
