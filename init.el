@@ -126,8 +126,7 @@ This function should only modify configuration layer settings."
      fzf
      (helm-ag :location (recipe :fetcher github :repo "junhuihuang/emacs-helm-ag"))
      (symbol-overlay :location (recipe :fetcher github :repo "wolray/symbol-overlay"))
-     ;; helm-swoop-edit is broken, see: https://github.com/ShingoFukuyama/helm-swoop/issues/133
-     (helm-swoop :location (recipe :fetcher github :repo "ashiklom/helm-swoop"))
+     (helm-swoop :location (recipe :fetcher github :repo "emacsorphanage/helm-swoop"))
      (elpy :location (recipe :fetcher github :repo "jorgenschaefer/elpy"))
      go-playground
      rust-playground
@@ -622,6 +621,7 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
   ;; (setq powerline-default-separator 'utf-8)
+  (require 'org-tempo)
   (setq-default tab-width 4)
   (setq lua-indent-level 4)
   (setq lua-indent-string-contents nil)
