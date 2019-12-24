@@ -44,7 +44,8 @@ This function should only modify configuration layer settings."
      (org :variables org-enable-github-support t)
      better-defaults
      ;;; 编辑器 -------
-     auto-completion
+     (auto-completion :variables
+                      auto-completion-enable-sort-by-usage t)
      (spell-checking :variables
                      ispell-program-name "aspell"
                      ispell-dictionary "american"
@@ -127,7 +128,6 @@ This function should only modify configuration layer settings."
      (helm-ag :location (recipe :fetcher github :repo "junhuihuang/emacs-helm-ag"))
      (symbol-overlay :location (recipe :fetcher github :repo "wolray/symbol-overlay"))
      (helm-swoop :location (recipe :fetcher github :repo "emacsorphanage/helm-swoop"))
-     (elpy :location (recipe :fetcher github :repo "jorgenschaefer/elpy"))
      go-playground
      rust-playground
      edit-indirect
@@ -716,6 +716,9 @@ before packages are loaded."
     (define-key helm-map (kbd "C-k") 'kill-line)
     (define-key helm-map (kbd "C-c C-c") 'helm-xclipboard-copy))
 
+  (with-eval-after-load 'helm-ag
+    (define-key helm-ag-edit-map (kbd "C-c C-j") 'compile-goto-error))
+
   (defun helm-xclipboard-copy (arg)
     "copy text in helm minibuffer"
     (interactive "P")
@@ -849,14 +852,6 @@ clear all highlight"
     (define-key map (kbd "r") 'symbol-overlay-rename)
     (setq symbol-overlay-map map))
 
-  ;; https://emacs.stackexchange.com/questions/30797/imenu-is-missing-multi-line-golang-function-signatures
-  (defun my-go-mode-hook()
-    (setq imenu-generic-expression
-          '(("type" "^[ \t]*type *\\([^ \t\n\r\f]*[ \t]*\\(struct\\|interface\\)\\)" 1)
-            ("func" "^func *\\(.*\\)" 1)))
-    )
-  (add-hook 'go-mode-hook 'my-go-mode-hook)
-
   ;; Bind <SPC f z> to fzf fuzzy find in CWD, and <SPC f Z> for a manual directory.
   ;; We disable colors so that the display looks good on any Emacs theme,
   ;; and we move the fzf prompt up by 1 row to fix a rendering bug in ansi-term.
@@ -951,7 +946,6 @@ clear all highlight"
     (browse-url (format "http://localhost:5180/%s.%s"
                         (file-name-base) (file-name-extension (buffer-file-name)))))
 
-  (elpy-enable)
   (add-hook 'lsp-ui-mode-hook
             (lambda () (lsp-ui-doc-mode -1) (lsp-ui-sideline-mode -1)))
   )
