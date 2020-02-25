@@ -57,10 +57,9 @@ This function should only modify configuration layer settings."
      react
      ;;; 源码管理 ------
      git
-     ;; (version-control :variables
-     ;;                  version-control-global-margin t
-     ;;                  version-control-diff-tool 'git-gutter
-     ;;                  version-control-global-margin t)
+     github
+     (version-control :variables
+                      version-control-global-margin nil)
      ;;; 编程语言 -------
      sql
      (emacs-lisp :variables emacs-lisp-hide-namespace-prefix nil)
@@ -546,7 +545,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq helm-move-to-line-cycle-in-source t)
   (setq helm-window-prefer-horizontal-split 'decide)
   (setq helm-switch-to-buffer-ow-vertically 'decide)
-  (setq split-width-threshold 160)
+  (setq split-width-threshold 150)
   (setq split-height-threshold nil)
   (setq ivy-wrap t)
 
@@ -620,7 +619,7 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-  ;; (setq powerline-default-separator 'utf-8)
+  (setq lsp-file-watch-threshold 10000)
   (require 'org-tempo)
   (setq-default tab-width 4)
   (setq lua-indent-level 4)
