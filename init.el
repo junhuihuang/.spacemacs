@@ -57,7 +57,6 @@ This function should only modify configuration layer settings."
      react
      ;;; 源码管理 ------
      git
-     github
      (version-control :variables
                       version-control-global-margin nil)
      ;;; 编程语言 -------
@@ -301,8 +300,10 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-major-mode-leader-key ","
 
    ;; Major mode leader key accessible in `emacs state' and `insert state'.
-   ;; (default "C-M-m")
-   dotspacemacs-major-mode-emacs-leader-key "C-M-m"
+   ;; (default "C-M-m" for terminal mode, "<M-return>" for GUI mode).
+   ;; Thus M-RET should work as leader key in both GUI and terminal modes.
+   ;; C-M-m also should work in terminal mode, but not in GUI mode.
+   dotspacemacs-major-mode-emacs-leader-key (if window-system "<M-return>" "C-M-m")
 
    ;; These variables control whether separate commands are bound in the GUI to
    ;; the key pairs `C-i', `TAB' and `C-m', `RET'.
@@ -824,52 +825,12 @@ clear all highlight"
   (add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
 ;; }}
 
-  ;; {{
-  ;; https://github.com/syl20bnr/spacemacs/issues/2222
-  (defun copy-to-remote-imac-clipboard()
-    "Copies selection to x-clipboard."
-    (interactive)
-    (if (display-graphic-p)
-        (progn
-          (message "Yanked region to x-clipboard!")
-          (call-interactively 'clipboard-kill-ring-save)
-          )
-      (if (region-active-p)
-          (progn
-            (shell-command-on-region (region-beginning) (region-end) "ssh imac pbcopy")
-            (message "Yanked region to clipboard!")
-            (deactivate-mark))
-        (message "No region active; can't yank to clipboard!")))
-    )
-  (defun paste-from-clipboard()
-    "Pastes from x-clipboard."
-    (interactive)
-    (if (display-graphic-p)
-        (progn
-          (clipboard-yank)
-          (message "graphics active")
-          )
-      (when (spacemacs/system-is-mac) (insert (shell-command-to-string "pbpaste")))
-      (when (spacemacs/system-is-linux) (insert (shell-command-to-string "xsel -o -b")))
-      )
-    )
-  (evil-leader/set-key "o y" 'copy-to-remote-imac-clipboard)
-  (evil-leader/set-key "o p" 'paste-from-clipboard)
-  ;; }}
   (evil-leader/set-key "o h" 'symbol-overlay-put)
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "M-n") 'symbol-overlay-jump-next)
     (define-key map (kbd "M-p") 'symbol-overlay-jump-prev)
     (define-key map (kbd "r") 'symbol-overlay-rename)
     (setq symbol-overlay-map map))
-
-  ;; Bind <SPC f z> to fzf fuzzy find in CWD, and <SPC f Z> for a manual directory.
-  ;; We disable colors so that the display looks good on any Emacs theme,
-  ;; and we move the fzf prompt up by 1 row to fix a rendering bug in ansi-term.
-  ;; Note that you simply press <C-c C-c> to gently exit fzf if you want to abort.
-  (setq fzf/args "-e -x --color bw --print-query")
-  (evil-leader/set-key "f z" 'fzf)
-  (evil-leader/set-key "f Z" 'fzf-directory)
 
   (progn
     ;; Git Gutter
