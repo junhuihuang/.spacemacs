@@ -71,7 +71,9 @@ This function should only modify configuration layer settings."
      ipython-notebook
      (python :variables
              python-enable-yapf-format-on-save t
-             python-test-runner '(nose pytest))
+             python-test-runner '(nose pytest)
+             python-lsp-server 'mspyls
+             python-lsp-git-root "~/bin/python-language-server")
      (go :variables
          go-tab-width 4
          gofmt-command "goimports"
@@ -108,7 +110,6 @@ This function should only modify configuration layer settings."
      ;; gtags
      command-log
      xclipboard
-     tern
      )
 
    ;; List of additional packages that will be installed without being
@@ -169,9 +170,9 @@ It should only modify the values of Spacemacs settings."
    ;; portable dumper in the cache directory under dumps sub-directory.
    ;; To load it when starting Emacs add the parameter `--dump-file'
    ;; when invoking Emacs 27.1 executable on the command line, for instance:
-   ;;   ./emacs --dump-file=~/.emacs.d/.cache/dumps/spacemacs.pdmp
-   ;; (default spacemacs.pdmp)
-   dotspacemacs-emacs-dumper-dump-file "spacemacs.pdmp"
+   ;;   ./emacs --dump-file=$HOME/.emacs.d/.cache/dumps/spacemacs-27.1.pdmp
+   ;; (default spacemacs-27.1.pdmp)
+   dotspacemacs-emacs-dumper-dump-file (format "spacemacs-%s.pdmp" emacs-version)
 
    ;; If non-nil ELPA repositories are contacted via HTTPS whenever it's
    ;; possible. Set it to nil if you have no way to use HTTPS in your
@@ -190,6 +191,13 @@ It should only modify the values of Spacemacs settings."
    ;; performance issues due to garbage collection operations.
    ;; (default '(100000000 0.1))
    dotspacemacs-gc-cons '(100000000 0.1)
+
+   ;; Set `read-process-output-max' when startup finishes.
+   ;; This defines how much data is read from a foreign process.
+   ;; Setting this >= 1 MB should increase performance for lsp servers
+   ;; in emacs 27.
+   ;; (default (* 1024 1024))
+   dotspacemacs-read-process-output-max (* 10 1024 1024)
 
    ;; If non-nil then Spacelpa repository is the primary source to install
    ;; a locked version of packages. If nil then Spacemacs will install the
@@ -545,6 +553,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; https://github.com/ardumont/markdown-toc
   ;; (custom-set-variables
   ;;  '(markdown-toc-user-toc-structure-manipulation-fn 'cdr))
+  (setq use-package-inject-hooks t)
   (setq package-check-signature nil)
   (custom-set-variables '(markdown-toc-user-toc-structure-manipulation-fn
                           (lambda (toc-structure)
@@ -641,7 +650,6 @@ before packages are loaded."
   (ido-mode -1)
   (which-function-mode t)
   (setq google-translate-default-target-language "zh-CN")
-  (setq tern-command '("tern" "--no-port-file"))
 
   ;; {{
   ;; https://github.com/emacs-helm/helm/issues/1100
