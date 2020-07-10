@@ -60,7 +60,6 @@ This function should only modify configuration layer settings."
      (version-control :variables
                       version-control-global-margin nil)
      ;;; 编程语言 -------
-     sql
      (emacs-lisp :variables emacs-lisp-hide-namespace-prefix nil)
      plantuml
      graphviz
@@ -87,7 +86,9 @@ This function should only modify configuration layer settings."
      lua
      html
      javascript
-     typescript
+     (typescript :variables
+                 typescript-fmt-on-save t
+                 typescript-fmt-tool 'typescript-formatter)
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode
             ;; c-c++-enable-clang-support t
@@ -928,6 +929,11 @@ clear all highlight"
 
   (add-hook 'lsp-ui-mode-hook
             (lambda () (lsp-ui-doc-mode -1) (lsp-ui-sideline-mode -1)))
+
+  ;; https://stackoverflow.com/questions/15869131/emacs-shell-command-on-buffer
+  (defun shell-command-on-buffer (command)
+    (interactive "sShell command on buffer: ")
+    (shell-command-on-region (point-min) (point-max) command nil))
   )
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
