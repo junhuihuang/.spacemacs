@@ -107,7 +107,6 @@ This function should only modify configuration layer settings."
             shell-default-position 'bottom)
      nginx
      docker
-     pandoc
      ;; gtags
      command-log
      xclipboard
