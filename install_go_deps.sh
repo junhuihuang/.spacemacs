@@ -2,9 +2,6 @@
 
 # https://github.com/syl20bnr/spacemacs/tree/develop/layers/+lang/go
 
-export ALL_PROXY=socks5://127.0.0.1:1086
-export HTTPS_PROXY=http://127.0.0.1:1087
-
 GO111MODULE=on go get -v golang.org/x/tools/gopls@latest
 GO111MODULE=on CGO_ENABLED=0 go get -v -trimpath -ldflags '-s -w' github.com/golangci/golangci-lint/cmd/golangci-lint
 go get -u -v golang.org/x/tools/cmd/godoc
