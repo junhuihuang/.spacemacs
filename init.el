@@ -97,8 +97,7 @@ This function should only modify configuration layer settings."
             ;; c-c++-enable-rtags-support t
             ;; c-c++-enable-rtags-completion nil
             c-c++-enable-google-style t
-            c-c++-enable-c++11 t
-            c-c++-backend 'lsp-ccls)
+            c-c++-enable-c++11 t)
      haskell
      protobuf
      csv
@@ -262,6 +261,14 @@ It should only modify the values of Spacemacs settings."
 
    ;; Default major mode of the scratch buffer (default `text-mode')
    dotspacemacs-scratch-mode 'text-mode
+
+   ;; If non-nil, *scratch* buffer will be persistent. Things you write down in
+   ;; *scratch* buffer will be saved and restored automatically.
+   dotspacemacs-scratch-buffer-persistent nil
+
+   ;; If non-nil, `kill-buffer' on *scratch* buffer
+   ;; will bury it instead of killing.
+   dotspacemacs-scratch-buffer-unkillable nil
 
    ;; Initial message in the scratch buffer, such as "Welcome to Spacemacs!"
    ;; (default nil)
@@ -444,7 +451,7 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil)
    dotspacemacs-line-numbers nil
 
-   ;; Code folding method. Possible values are `evil' and `origami'.
+   ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
 
@@ -903,6 +910,11 @@ clear all highlight"
               (define-key dired-mode-map (kbd "C-o") 'dired-view-current)     ; was dired-display-file
               (define-key dired-mode-map (kbd "n")   'dired-view-next)           ; was dired-next-line
               (define-key dired-mode-map (kbd "p")   'dired-view-previous))) ; was dired-previous-line
+
+  ;; https://github.com/syl20bnr/spacemacs/issues/12740
+  (add-hook 'cython-mode-hook
+            (lambda ()
+              (which-function-mode -1)))
 
   (defun dired-view-next ()
     "Move down one line and view the current file in another window."
