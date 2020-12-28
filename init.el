@@ -40,7 +40,7 @@ This function should only modify configuration layer settings."
      ;; ----------------------------------------------------------------
 
      ;;; Emacs ---------
-     helm
+     ivy
      (org :variables org-enable-github-support t)
      better-defaults
      ;;; 编辑器 -------
@@ -959,6 +959,21 @@ clear all highlight"
   (defun shell-command-on-buffer (command)
     (interactive "sShell command on buffer: ")
     (shell-command-on-region (point-min) (point-max) command nil))
+
+  ;; https://github.com/abo-abo/swiper/issues/2712
+  (defun my-counsel-git-grep-action (x)
+    "Like `counsel-git-grep-action', but use another window."
+    (let ((display-buffer-overriding-action '(() (inhibit-same-window . t))))
+      (counsel-git-grep-action x)))
+
+  (ivy-set-actions
+   'counsel-rg
+   '(("j" my-counsel-git-grep-action "other window")))
+
+  (with-eval-after-load 'ivy
+    (define-key ivy-minibuffer-map (kbd "C-c o") 'ivy-dispatching-done)
+    (define-key ivy-minibuffer-map (kbd "C-i") 'ivy-call-and-recenter)
+    (setq ivy-on-del-error-function #'ignore))
   )
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
