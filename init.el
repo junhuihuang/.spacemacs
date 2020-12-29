@@ -974,6 +974,17 @@ clear all highlight"
     (define-key ivy-minibuffer-map (kbd "C-c o") 'ivy-dispatching-done)
     (define-key ivy-minibuffer-map (kbd "C-i") 'ivy-call-and-recenter)
     (setq ivy-on-del-error-function #'ignore))
+
+  (defun copy-directory-path-to-xclipboard ()
+    (interactive)
+    (spacemacs/copy-directory-path)
+    ((lambda (sel)
+      (when (spacemacs/system-is-mac) (shell-command (format "echo -n %s | pbcopy" (shell-quote-argument sel))))
+      (when (spacemacs/system-is-linux) (shell-command (format "echo -n %s | xsel -ib" (shell-quote-argument sel))))
+      (prog1 nil (message "Copied to clipboard: %s" sel) (sit-for 1)))(current-kill 0))
+    )
+
+  (evil-leader/set-key "f x d" 'copy-directory-path-to-xclipboard)
   )
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
