@@ -961,18 +961,19 @@ clear all highlight"
     (shell-command-on-region (point-min) (point-max) command nil))
 
   ;; https://github.com/abo-abo/swiper/issues/2712
-  (defun my-counsel-git-grep-action (x)
+  (defun counsel-git-grep-action-new-window (x)
     "Like `counsel-git-grep-action', but use another window."
-    (let ((display-buffer-overriding-action '(() (inhibit-same-window . t))))
-      (counsel-git-grep-action x)))
+    (select-window (split-window-right))
+    (counsel-git-grep-action x))
 
   (ivy-set-actions
    'counsel-rg
-   '(("j" my-counsel-git-grep-action "other window")))
+   '(("j" counsel-git-grep-action-new-window "other window")))
 
   (with-eval-after-load 'ivy
     (define-key ivy-minibuffer-map (kbd "C-c o") 'ivy-dispatching-done)
     (define-key ivy-minibuffer-map (kbd "C-i") 'ivy-call-and-recenter)
+    (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial)
     (setq ivy-on-del-error-function #'ignore))
 
   (defun copy-directory-path-to-xclipboard ()
