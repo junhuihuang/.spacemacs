@@ -973,7 +973,7 @@ clear all highlight"
 
   (with-eval-after-load 'ivy
     (define-key ivy-minibuffer-map (kbd "C-c o") 'ivy-dispatching-done)
-    (define-key ivy-minibuffer-map (kbd "C-i") 'ivy-call-and-recenter)
+    (define-key ivy-minibuffer-map (kbd "C-c C-c") 'ivy-call-and-recenter)
     (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial)
     (setq ivy-on-del-error-function #'ignore))
 
