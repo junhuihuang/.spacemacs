@@ -975,6 +975,7 @@ clear all highlight"
     (define-key ivy-minibuffer-map (kbd "C-c o") 'ivy-dispatching-done)
     (define-key ivy-minibuffer-map (kbd "C-c C-c") 'ivy-call-and-recenter)
     (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial)
+    (define-key ivy-minibuffer-map (kbd "C-q") 'ivy-avy)
     (setq ivy-on-del-error-function #'ignore))
 
   (defun copy-directory-path-to-xclipboard ()
