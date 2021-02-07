@@ -124,9 +124,7 @@ This function should only modify configuration layer settings."
    '(
      ob-go  ;; Enable org-babel support for Go
      ob-rust
-     fzf
      (symbol-overlay :location (recipe :fetcher github :repo "wolray/symbol-overlay"))
-     (helm-swoop :location (recipe :fetcher github :repo "emacsorphanage/helm-swoop"))
      go-playground
      rust-playground
      edit-indirect
@@ -245,9 +243,13 @@ It should only modify the values of Spacemacs settings."
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
-   ;; `recents' `bookmarks' `projects' `agenda' `todos'.
+   ;; `recents' `recents-by-project' `bookmarks' `projects' `agenda' `todos'.
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
+   ;; The exceptional case is `recents-by-project', where list-type must be a
+   ;; pair of numbers, e.g. `(recents-by-project . (7 .  5))', where the first
+   ;; number is the project limit and the second the limit on the recent files
+   ;; within a project.
    dotspacemacs-startup-lists '((recents . 5)
                                 (projects . 7))
 
@@ -293,7 +295,9 @@ It should only modify the values of Spacemacs settings."
    ;; (default t)
    dotspacemacs-colorize-cursor-according-to-state t
 
-   ;; Default font or prioritized list of fonts.
+   ;; Default font or prioritized list of fonts. The `:size' can be specified as
+   ;; a non-negative integer (pixel size), or a floating-point (point size).
+   ;; Point size is recommended, because it's device independent. (default 10.0)
    dotspacemacs-default-font '("Source Code Pro"
                                :size 10.0
                                :weight normal
@@ -512,6 +516,9 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil - same as frame-title-format)
    dotspacemacs-icon-title-format nil
 
+   ;; Show trailing whitespace (default t)
+   dotspacemacs-show-trailing-whitespace t
+
    ;; Delete whitespace while saving buffer. Possible values are `all'
    ;; to aggressively delete empty line and long sequences of whitespace,
    ;; `trailing' to delete only the whitespace at end of lines, `changed' to
@@ -544,7 +551,10 @@ It should only modify the values of Spacemacs settings."
 
    ;; If nil the home buffer shows the full path of agenda items
    ;; and todos. If non nil only the file name is shown.
-   dotspacemacs-home-shorten-agenda-source nil))
+   dotspacemacs-home-shorten-agenda-source nil
+
+   ;; If non-nil then byte-compile some of Spacemacs files.
+   dotspacemacs-byte-compile nil))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -585,9 +595,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq cc-search-directories
         '("../*/include" "../*/inc" "." "/usr/include" "/usr/local/include/*" "../*/src" "../*/source" "$WXWIN/include"))
 
-  (setq helm-move-to-line-cycle-in-source t)
-  (setq helm-window-prefer-horizontal-split 'decide)
-  (setq helm-switch-to-buffer-ow-vertically 'decide)
   (setq split-width-threshold 150)
   (setq split-height-threshold nil)
   (setq ivy-wrap t)
@@ -646,7 +653,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   (setq dumb-jump-prefer-searcher 'rg)
 
-  (setq helm-grep-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")
   (setq ivy-count-format "(%d/%d) ")
 )
 
@@ -672,38 +678,6 @@ before packages are loaded."
   (ido-mode -1)
   (which-function-mode t)
   (setq google-translate-default-target-language "zh-CN")
-
-  ;; {{
-  ;; https://github.com/emacs-helm/helm/issues/1100
-  (defun helm-buffer-switch-new-window (candidate)
-    "Display buffers in new windows."
-    ;; Select the bottom right window
-    ;; (require 'winner)
-    ;; (select-window (car (last (winner-sorted-window-list))))
-    ;; Display buffers in new windows
-    (dolist (buf (helm-marked-candidates))
-      (select-window (split-window-below))
-      (switch-to-buffer buf))
-    ;; (optional) Adjust size of windows
-    (balance-windows))
-
-  (defun helm-file-switch-new-window (candidate)
-    "Open files in new windows."
-    (dolist (buf (helm-marked-candidates))
-      (select-window (split-window-below))
-      (switch-to-buffer (find-file-noselect buf))))
-
-  (with-eval-after-load 'helm
-    (add-to-list 'helm-type-buffer-actions
-                 '("Display buffer(s) in new window(s)" .
-                   helm-buffer-switch-new-window))
-    (add-to-list 'helm-find-files-actions
-                 '("Open file(s) below window(s)" .
-                   helm-file-switch-new-window))
-    (add-to-list 'helm-type-file-actions
-                 '("Open file(s) below window(s)" .
-                   helm-file-switch-new-window)))
-  ;; }}
 
   ;; https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-misc.el
   ;; {{
@@ -752,26 +726,6 @@ before packages are loaded."
   ;; https://github.com/syl20bnr/spacemacs/issues/4243
   (with-eval-after-load 'company
     (define-key company-active-map (kbd "C-w") 'spacemacs/backward-kill-word-or-region))
-  (with-eval-after-load 'helm
-    (define-key helm-map (kbd "C-c C-w") 'spacemacs/backward-kill-word-or-region)
-    (define-key helm-map (kbd "C-c C-r") 'helm-show-kill-ring)
-    (define-key helm-map (kbd "C-k") 'kill-line)
-    (define-key helm-map (kbd "C-c C-c") 'helm-xclipboard-copy))
-
-  (with-eval-after-load 'helm-ag
-    (define-key helm-ag-edit-map (kbd "C-c C-j") 'compile-goto-error))
-
-  (defun helm-xclipboard-copy (arg)
-    "copy text in helm minibuffer"
-    (interactive "P")
-    (with-helm-alive-p
-      (helm-run-after-exit
-       (lambda (sel)
-         (when (spacemacs/system-is-mac) (shell-command (format "echo -n %s | pbcopy" (shell-quote-argument sel))))
-         (when (spacemacs/system-is-linux) (shell-command (format "echo -n %s | xsel -ib" (shell-quote-argument sel))))
-         (prog1 nil (message "Copied to clipboard: %s" sel) (sit-for 1)))
-       (format "%s" (helm-get-selection nil (not arg))))))
-  (put 'helm-xclipboard-copy 'helm-only t)
 
   (with-eval-after-load 'go-playground
     (define-key go-playground-mode-map (kbd "C-c C-c") 'go-playground-exec))
@@ -945,13 +899,6 @@ clear all highlight"
             (switch-to-buffer filebuffer)                                    ; simply switch
           (view-file file))                                                    ; ... view it
         (other-window -1))))                   ; give the attention back to the dired buffer
-
-  ;; https://emacs-china.org/t/topic/1549/3
-  (defun markdown-to-html()
-    (interactive)
-    (start-process "grip" "*gfm-to-html*" "grip" (buffer-file-name) "5180")
-    (browse-url (format "http://localhost:5180/%s.%s"
-                        (file-name-base) (file-name-extension (buffer-file-name)))))
 
   (add-hook 'lsp-ui-mode-hook
             (lambda () (lsp-ui-doc-mode -1) (lsp-ui-sideline-mode -1)))
