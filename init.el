@@ -927,6 +927,24 @@ clear all highlight"
    '(("j" counsel-git-grep-action-new-window "other window")
      ("s" counsel-git-grep-action-horizontal-window "in horizontal split")))
 
+  (defun ivy-xref-action-right-window (x)
+    "open candidate file in the new window"
+    (select-window (split-window-right))
+    (let* ((marker (xref-location-marker (cdr x)))
+           (buf (marker-buffer marker)))
+      (xref--show-pos-in-buf marker buf)))
+
+  (defun ivy-xref-action-horizontal-window (x)
+    "open candidate file in the new window"
+    (select-window (split-window-vertically))
+    (let* ((marker (xref-location-marker (cdr x)))
+           (buf (marker-buffer marker)))
+      (xref--show-pos-in-buf marker buf)))
+
+  (ivy-set-actions
+   'ivy-xref-show-xrefs
+   '(("j" ivy-xref-action-right-window "other window")
+     ("s" ivy-xref-action-horizontal-window "in horizontal split")))
 
   (with-eval-after-load 'ivy
     (define-key ivy-minibuffer-map (kbd "C-c o") 'ivy-dispatching-done)
