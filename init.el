@@ -72,7 +72,7 @@ This function should only modify configuration layer settings."
              python-enable-yapf-format-on-save t
              python-test-runner '(nose pytest)
              python-backend 'lsp
-             python-lsp-server 'pyright)
+             python-lsp-server 'pyls)
      (go :variables
          go-tab-width 4
          gofmt-command "goimports"
@@ -97,7 +97,10 @@ This function should only modify configuration layer settings."
             ;; c-c++-enable-rtags-support t
             ;; c-c++-enable-rtags-completion nil
             c-c++-enable-google-style t
-            c-c++-enable-c++11 t)
+            c-c++-enable-c++11 t
+            c-c++-adopt-subprojects t
+            c-c++-backend 'lsp-ccls
+            c-c++-lsp-enable-semantic-highlight 'rainbow)
      haskell
      protobuf
      csv
@@ -914,9 +917,16 @@ clear all highlight"
     (select-window (split-window-right))
     (counsel-git-grep-action x))
 
+  (defun counsel-git-grep-action-horizontal-window (x)
+    "Like `counsel-git-grep-action', but use another window."
+    (select-window (split-window-vertically))
+    (counsel-git-grep-action x))
+
   (ivy-set-actions
    'counsel-rg
-   '(("j" counsel-git-grep-action-new-window "other window")))
+   '(("j" counsel-git-grep-action-new-window "other window")
+     ("s" counsel-git-grep-action-horizontal-window "in horizontal split")))
+
 
   (with-eval-after-load 'ivy
     (define-key ivy-minibuffer-map (kbd "C-c o") 'ivy-dispatching-done)
