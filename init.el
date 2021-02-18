@@ -198,7 +198,7 @@ It should only modify the values of Spacemacs settings."
    ;; Setting this >= 1 MB should increase performance for lsp servers
    ;; in emacs 27.
    ;; (default (* 1024 1024))
-   dotspacemacs-read-process-output-max (* 10 1024 1024)
+   dotspacemacs-read-process-output-max (* 1 1024 1024 1024)
 
    ;; If non-nil then Spacelpa repository is the primary source to install
    ;; a locked version of packages. If nil then Spacemacs will install the
@@ -647,7 +647,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
       (add-to-list 'org-babel-load-languages '(js . t))
       (add-to-list 'org-babel-load-languages '(rust . t))))
 
-  (setq imenu-max-item-length 160)
+  (setq imenu-max-item-length 256)
   (setq flycheck-gometalinter-deadline "10s")
   (setq flycheck-gometalinter-fast t)
   (setq-default evil-escape-key-sequence "kj")
@@ -657,6 +657,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq dumb-jump-prefer-searcher 'rg)
 
   (setq ivy-count-format "(%d/%d) ")
+
+  (when (>= emacs-major-version 27)
+    (setq xref-show-definitions-function #'ivy-xref-show-defs))
 )
 
 (defun dotspacemacs/user-load ()
