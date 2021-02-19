@@ -962,10 +962,18 @@ clear all highlight"
     ((lambda (sel)
       (when (spacemacs/system-is-mac) (shell-command (format "echo -n %s | pbcopy" (shell-quote-argument sel))))
       (when (spacemacs/system-is-linux) (shell-command (format "echo -n %s | xsel -ib" (shell-quote-argument sel))))
-      (prog1 nil (message "Copied to clipboard: %s" sel) (sit-for 1)))(current-kill 0))
-    )
+      (prog1 nil (message "Copied to clipboard: %s" sel) (sit-for 1)))(current-kill 0)))
+
+  (defun copy-buffer-name-to-xclipboard ()
+    (interactive)
+    (spacemacs/copy-buffer-name)
+    ((lambda (sel)
+       (when (spacemacs/system-is-mac) (shell-command (format "echo -n %s | pbcopy" (shell-quote-argument sel))))
+       (when (spacemacs/system-is-linux) (shell-command (format "echo -n %s | xsel -ib" (shell-quote-argument sel))))
+       (prog1 nil (message "Copied to clipboard: %s" sel) (sit-for 1)))(current-kill 0)))
 
   (evil-leader/set-key "f x d" 'copy-directory-path-to-xclipboard)
+  (evil-leader/set-key "f x f" 'copy-buffer-name-to-xclipboard)
   )
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
