@@ -72,7 +72,7 @@ This function should only modify configuration layer settings."
              python-enable-yapf-format-on-save t
              python-test-runner '(nose pytest)
              python-backend 'lsp
-             python-lsp-server 'pyls)
+             python-lsp-server 'pyright)
      (go :variables
          go-tab-width 4
          gofmt-command "goimports"
@@ -131,6 +131,7 @@ This function should only modify configuration layer settings."
      go-playground
      rust-playground
      edit-indirect
+     (emacs-bazel-mode :location (recipe :fetcher github :repo "bazelbuild/emacs-bazel-mode" :files ("lisp/*.el" (:exclude "lisp/*-test.el"))))
     )
 
    ;; A list of packages that cannot be updated.
@@ -877,6 +878,10 @@ clear all highlight"
             (lambda ()
               (which-function-mode -1)))
 
+  (add-hook 'python-mode-local-vars-hook
+            (lambda ()
+              (push "[/\\\\]miniconda3[/\\\\]lib" lsp-file-watch-ignored-directories)))
+
   (defun dired-view-next ()
     "Move down one line and view the current file in another window."
     (interactive)
@@ -955,6 +960,9 @@ clear all highlight"
     (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial)
     (define-key ivy-minibuffer-map (kbd "C-q") 'ivy-avy)
     (setq ivy-on-del-error-function #'ignore))
+
+  (with-eval-after-load 'counsel
+    (setq counsel-find-file-at-point nil))
 
   (defun copy-directory-path-to-xclipboard ()
     (interactive)
