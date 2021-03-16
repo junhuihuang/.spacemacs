@@ -466,9 +466,14 @@ It should only modify the values of Spacemacs settings."
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
 
-   ;; If non-nil `smartparens-strict-mode' will be enabled in programming modes.
+   ;; If non-nil and `dotspacemacs-activate-smartparens-mode' is also non-nil,
+   ;; `smartparens-strict-mode' will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
+
+   ;; If non-nil smartparens-mode will be enabled in programming modes.
+   ;; (default t)
+   dotspacemacs-activate-smartparens-mode t
 
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc...
@@ -632,6 +637,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq plantuml-jar-path
         (expand-file-name "~/bin/plantuml.jar"))
   (setq org-plantuml-jar-path plantuml-jar-path)
+  (add-to-list 'auto-mode-alist '("\\.wsd\\'" . plantuml-mode))
 
   ;; https://emacs-china.org/t/org-mode/597/5
   ;; 必须在 (require 'org) 之前
