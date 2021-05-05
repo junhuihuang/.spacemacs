@@ -54,7 +54,9 @@ This function should only modify configuration layer settings."
                      ispell-personal-dictionary "~/.spacemacs.d/.aspell.en.pws"
                      spell-checking-enable-by-default nil)
      syntax-checking
-     lsp
+     (lsp :variables
+          lsp-rust-server 'rust-analyzer
+          cargo-process-reload-on-modify t)
      ;;; 框架 ---------
      react
      ;;; 源码管理 ------
@@ -80,11 +82,10 @@ This function should only modify configuration layer settings."
          gofmt-command "goimports"
          go-format-before-save t
          go-backend 'lsp
-         godoc-at-point-function 'godoc-gogetdoc
-         go-use-golangci-lint t)
+         godoc-at-point-function 'godoc-gogetdoc)
      (rust :variables
            rust-format-on-save t
-           rust-backend 'racer)
+           rust-backend 'lsp)
      lua
      html
      javascript
@@ -897,9 +898,9 @@ clear all highlight"
             (lambda ()
               (which-function-mode -1)))
 
-  (add-hook 'python-mode-local-vars-hook
-            (lambda ()
-              (push "[/\\\\]miniconda3[/\\\\]lib" lsp-file-watch-ignored-directories)))
+  ;; (add-hook 'python-mode-local-vars-hook
+  ;;           (lambda ()
+  ;;             (push "[/\\\\]miniconda3[/\\\\]lib" lsp-file-watch-ignored-directories)))
 
   (defun dired-view-next ()
     "Move down one line and view the current file in another window."
