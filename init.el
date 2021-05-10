@@ -42,8 +42,7 @@ This function should only modify configuration layer settings."
      ;;; Emacs ---------
      ivy
      (org :variables
-          org-enable-github-support t
-          org-enable-roam-support t)
+          org-enable-github-support t)
      better-defaults
      ;;; 编辑器 -------
      (auto-completion :variables
@@ -76,7 +75,7 @@ This function should only modify configuration layer settings."
              python-enable-yapf-format-on-save t
              python-test-runner '(nose pytest)
              python-backend 'lsp
-             python-lsp-server 'pyright)
+             python-lsp-server 'pyls)
      (go :variables
          go-tab-width 4
          gofmt-command "goimports"
@@ -103,7 +102,8 @@ This function should only modify configuration layer settings."
             c-c++-enable-c++11 t
             c-c++-adopt-subprojects t
             c-c++-backend 'lsp-ccls
-            c-c++-lsp-enable-semantic-highlight 'rainbow)
+            c-c++-lsp-enable-semantic-highlight 'rainbow
+            c-c++-lsp-semantic-highlight-method 'overlay)
      haskell
      protobuf
      csv
