@@ -3,13 +3,17 @@
 # Install importmagic and epc for importmagic functionality.
 pip install --upgrade epc
 pip install --upgrade importmagic
-pip install --upgrade "jedi>=0.13.0" "json-rpc>=1.8.1" "service_factory>=0.1.5"
-pip install --upgrade python-language-server[all]
-# for import sorting
-pip install --upgrade pyls-isort
-# for mypy checking (python 3.4+ is needed)
-pip install --upgrade pyls-mypy
-pip install --upgrade pyls-black
+## pip install --upgrade "jedi>=0.13.0" "json-rpc>=1.8.1" "service_factory>=0.1.5"
+## pip install --upgrade python-language-server[all]
+pip install --upgrade jedi
+pip install --upgrade python-lsp-server[all]
+## pip install --upgrade pyls-flake8
+##
+## # for import sorting
+## pip install --upgrade pyls-isort
+## # for mypy checking (python 3.4+ is needed)
+## pip install --upgrade pyls-mypy
+## pip install --upgrade pyls-black
 # Syntax checking uses flake8 package:
 pip install --upgrade flake8
 # To be able to suppress unused imports easily, install autoflake

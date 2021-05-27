@@ -55,13 +55,12 @@ This function should only modify configuration layer settings."
      syntax-checking
      (lsp :variables
           lsp-rust-server 'rust-analyzer
-          cargo-process-reload-on-modify t)
+          cargo-process-reload-on-modify t
+          lsp-pylsp-plugins-pydocstyle-enabled nil)
      ;;; 框架 ---------
      react
      ;;; 源码管理 ------
      git
-     (version-control :variables
-                      version-control-global-margin nil)
      ;;; 编程语言 -------
      (emacs-lisp :variables emacs-lisp-hide-namespace-prefix nil)
      plantuml
@@ -72,10 +71,11 @@ This function should only modify configuration layer settings."
      shell-scripts
      ipython-notebook
      (python :variables
-             python-enable-yapf-format-on-save t
+             python-format-on-save t
+             python-sort-imports-on-save t
              python-test-runner '(nose pytest)
              python-backend 'lsp
-             python-lsp-server 'pyls)
+             python-lsp-server 'pylsp)
      (go :variables
          go-tab-width 4
          gofmt-command "goimports"
@@ -263,6 +263,9 @@ It should only modify the values of Spacemacs settings."
 
    ;; True if the home buffer should respond to resize events. (default t)
    dotspacemacs-startup-buffer-responsive t
+
+   ;; Show numbers before the startup list lines. (default t)
+   dotspacemacs-show-startup-list-numbers t
 
    ;; The minimum delay in seconds between number key presses. (default 0.4)
    dotspacemacs-startup-buffer-multi-digit-delay 0.4
@@ -556,6 +559,9 @@ It should only modify the values of Spacemacs settings."
    ;; (default t)
    dotspacemacs-use-clean-aindent-mode t
 
+   ;; Accept SPC as y for prompts if non nil. (default nil)
+   dotspacemacs-use-SPC-as-y nil
+
    ;; If non-nil shift your number row to match the entered keyboard layout
    ;; (only in insert state). Currently supported keyboard layouts are:
    ;; `qwerty-us', `qwertz-de' and `querty-ca-fr'.
@@ -671,6 +677,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq imenu-max-item-length 256)
   (setq flycheck-gometalinter-deadline "10s")
   (setq flycheck-gometalinter-fast t)
+  (setq flycheck-flake8rc ".flake8")
   (setq-default evil-escape-key-sequence "kj")
 
   (setq tags-add-tables t)
