@@ -627,6 +627,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq split-width-threshold 150)
   (setq split-height-threshold nil)
   (setq ivy-wrap t)
+  (setq wgrep-auto-save-buffer t)
 
   ;; http://blog.binchen.org/posts/easy-indentation-setup-in-emacs-for-web-development.html
   (setq-default c-default-style "bsd")
