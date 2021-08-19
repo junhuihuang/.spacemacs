@@ -71,7 +71,7 @@ This function should only modify configuration layer settings."
      shell-scripts
      ipython-notebook
      (python :variables
-             python-format-on-save t
+             python-formatter 'black
              python-sort-imports-on-save t
              python-test-runner '(nose pytest)
              python-backend 'lsp
@@ -977,10 +977,22 @@ clear all highlight"
            (buf (marker-buffer marker)))
       (xref--show-pos-in-buf marker buf)))
 
+  (defun ivy-swiper-action-right-window (x)
+    "open candidate file in the new window"
+    (select-window (split-window-right)))
+
+  (defun ivy-swiper-action-horizontal-window (x)
+    "open candidate file in the new window"
+    (select-window (split-window-vertically)))
+
   (ivy-set-actions
    'ivy-xref-show-xrefs
    '(("j" ivy-xref-action-right-window "other window")
      ("s" ivy-xref-action-horizontal-window "in horizontal split")))
+  (ivy-set-actions
+   'swiper
+   '(("j" ivy-swiper-action-right-window "other window")
+     ("s" ivy-swiper-action-horizontal-window "in horizontal split")))
 
   (with-eval-after-load 'ivy
     (define-key ivy-minibuffer-map (kbd "C-c o") 'ivy-dispatching-done)

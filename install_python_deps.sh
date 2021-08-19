@@ -6,7 +6,7 @@ pip install --upgrade importmagic
 ## pip install --upgrade "jedi>=0.13.0" "json-rpc>=1.8.1" "service_factory>=0.1.5"
 ## pip install --upgrade python-language-server[all]
 pip install --upgrade jedi
-pip install --upgrade python-lsp-server[all]
+# pip install --upgrade python-lsp-server[all]
 ## pip install --upgrade pyls-flake8
 ##
 ## # for import sorting
