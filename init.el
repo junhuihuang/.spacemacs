@@ -68,7 +68,9 @@ This function should only modify configuration layer settings."
      yaml
      (markdown
                :variables markdown-live-preview-engine 'vmd)
-     shell-scripts
+     (shell-scripts :variables
+                    shell-scripts-backend 'shellcheck
+                    shell-scripts-format-on-save t)
      ipython-notebook
      (python :variables
              python-formatter 'black
@@ -823,27 +825,6 @@ clear all highlight"
         (message "No vaidate region, or no validate symbol under curosr!"))))
   ;;; }
 
-;;{{
-;; http://stackoverflow.com/questions/8257009/emacs-insert-word-at-point-into-replace-string-query
-  (defun my-minibuffer-insert-word-at-point ()
-    "Get word at point in original buffer and insert it to minibuffer."
-    (interactive)
-    (let (word beg)
-      (with-current-buffer (window-buffer (minibuffer-selected-window))
-        (save-excursion
-          (skip-syntax-backward "w_")
-          (setq beg (point))
-          ;; (skip-syntax-forward "w_ ")
-          (skip-chars-forward "-/_.a-zA-z0-9")
-          (setq word (buffer-substring-no-properties beg (point)))))
-      (when word
-        (insert word))))
-  (defun my-minibuffer-setup-hook ()
-    (local-set-key (kbd "C-d") 'my-minibuffer-insert-word-at-point))
-
-  (add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
-;; }}
-
   (evil-leader/set-key "o h" 'symbol-overlay-put)
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "M-n") 'symbol-overlay-jump-next)
@@ -1022,6 +1003,8 @@ clear all highlight"
 
   (evil-leader/set-key "f x d" 'copy-directory-path-to-xclipboard)
   (evil-leader/set-key "f x f" 'copy-buffer-name-to-xclipboard)
+
+  (global-set-key (kbd "C-x o") 'ace-window)
   )
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.

@@ -1,4 +1,5 @@
 #!/bin/sh
 
-cargo install racer --force
-rustup component add rls-preview rust-analysis rust-src
+cargo install cargo-edit cargo-audit cargo-outdated
+
+rustup component add rustfmt clippy
