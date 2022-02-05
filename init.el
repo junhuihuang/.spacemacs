@@ -42,7 +42,10 @@ This function should only modify configuration layer settings."
      ;;; Emacs ---------
      ivy
      (org :variables
-          org-enable-github-support t)
+          org-enable-github-support t
+          org-enable-roam-support t
+          org-enable-roam-server t
+          org-enable-roam-protocol t)
      better-defaults
      ;;; 编辑器 -------
      (auto-completion :variables
@@ -120,6 +123,7 @@ This function should only modify configuration layer settings."
      command-log
      xclipboard
      dap
+     spacemacs-purpose
      )
 
    ;; List of additional packages that will be installed without being
@@ -138,13 +142,14 @@ This function should only modify configuration layer settings."
      rust-playground
      edit-indirect
      (bazel :location (recipe :fetcher github :repo "bazelbuild/emacs-bazel-mode"))
+     org-roam-ui
     )
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(org-superstar)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -163,9 +168,13 @@ It should only modify the values of Spacemacs settings."
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
-   ;; If non-nil then enable support for the portable dumper. You'll need
-   ;; to compile Emacs 27 from source following the instructions in file
+   ;; If non-nil then enable support for the portable dumper. You'll need to
+   ;; compile Emacs 27 from source following the instructions in file
    ;; EXPERIMENTAL.org at to root of the git repository.
+   ;;
+   ;; WARNING: pdumper does not work with Native Compilation, so it's disabled
+   ;; regardless of the following setting when native compilation is in effect.
+   ;;
    ;; (default nil)
    dotspacemacs-enable-emacs-pdumper nil
 
@@ -459,8 +468,8 @@ It should only modify the values of Spacemacs settings."
    ;; If set to `t', `relative' or `visual' then line numbers are enabled in all
    ;; `prog-mode' and `text-mode' derivatives. If set to `relative', line
    ;; numbers are relative. If set to `visual', line numbers are also relative,
-   ;; but lines are only visual lines are counted. For example, folded lines
-   ;; will not be counted and wrapped lines are counted as multiple lines.
+   ;; but only visual lines are counted. For example, folded lines will not be
+   ;; counted and wrapped lines are counted as multiple lines.
    ;; This variable can also be set to a property list for finer control:
    ;; '(:relative nil
    ;;   :visual nil
@@ -554,14 +563,14 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
 
-   ;; If non nil activate `clean-aindent-mode' which tries to correct
-   ;; virtual indentation of simple modes. This can interfer with mode specific
+   ;; If non-nil activate `clean-aindent-mode' which tries to correct
+   ;; virtual indentation of simple modes. This can interfere with mode specific
    ;; indent handling like has been reported for `go-mode'.
    ;; If it does deactivate it here.
    ;; (default t)
    dotspacemacs-use-clean-aindent-mode t
 
-   ;; Accept SPC as y for prompts if non nil. (default nil)
+   ;; Accept SPC as y for prompts if non-nil. (default nil)
    dotspacemacs-use-SPC-as-y nil
 
    ;; If non-nil shift your number row to match the entered keyboard layout
@@ -581,7 +590,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-pretty-docs nil
 
    ;; If nil the home buffer shows the full path of agenda items
-   ;; and todos. If non nil only the file name is shown.
+   ;; and todos. If non-nil only the file name is shown.
    dotspacemacs-home-shorten-agenda-source nil
 
    ;; If non-nil then byte-compile some of Spacemacs files.
@@ -659,15 +668,18 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq org-plantuml-jar-path plantuml-jar-path)
   (add-to-list 'auto-mode-alist '("\\.wsd\\'" . plantuml-mode))
 
-  ;; https://emacs-china.org/t/org-mode/597/5
-  ;; 必须在 (require 'org) 之前
-  (setq org-emphasis-regexp-components
-        ;; markup 记号前后允许中文
-        (list (concat " \t('\"{"            "[:nonascii:]")
-              (concat "- \t.,:!?;'\")}\\["  "[:nonascii:]")
-              " \t\r\n,\"'"
-              "."
-              1))
+  ;; https://emacs-china.org/t/org-mode/597/6
+  (with-eval-after-load 'org
+    (setq org-match-substring-regexp
+          (concat
+           ;; 限制上标和下标的匹配范围，org 中对其的介绍见：(org) Subscripts and superscripts
+           "\\([0-9a-zA-Zα-γΑ-Ω]\\)\\([_^]\\)\\("
+           "\\(?:" (org-create-multibrace-regexp "{" "}" org-match-sexp-depth) "\\)"
+           "\\|"
+           "\\(?:" (org-create-multibrace-regexp "(" ")" org-match-sexp-depth) "\\)"
+           "\\|"
+           "\\(?:\\*\\|[+-]?[[:alnum:].,\\]*[[:alnum:]]\\)\\)")))
+
 
   (spacemacs|use-package-add-hook org
     :post-config
@@ -691,6 +703,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   (when (>= emacs-major-version 27)
     (setq xref-show-definitions-function #'ivy-xref-show-defs))
+
+  (setq org-roam-directory (file-truename "~/Dropbox/vault"))
 )
 
 (defun dotspacemacs/user-load ()
