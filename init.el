@@ -703,7 +703,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; (setq org-roam-directory (file-truename "~/Dropbox/vault"))
   ;; (setq org-enable-roam-ui t)
   ;; (setq org-enable-org-brain-support t)
-  (setq image-types (cons 'svg image-types))
 )
 
 (defun dotspacemacs/user-load ()
