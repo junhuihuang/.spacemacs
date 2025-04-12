@@ -1,13 +1,13 @@
 #!/bin/sh
 
 # Install importmagic and epc for importmagic functionality.
-pip install --upgrade epc
-pip install --upgrade importmagic
-pip install --upgrade 'python-lsp-server[all]'
-pip install --upgrade jedi
-pip install --upgrade flake8
-pip install --upgrade autoflake
-pip install --upgrade "ptvsd>=4.2"
+pip install --upgrade epc --break-system-packages
+pip install --upgrade importmagic --break-system-packages
+pip install --upgrade 'python-lsp-server[all]' --break-system-packages
+pip install --upgrade jedi --break-system-packages
+pip install --upgrade flake8 --break-system-packages
+pip install --upgrade autoflake --break-system-packages
+pip install --upgrade "ptvsd>=4.2" --break-system-packages
 
-pip install --upgrade yapf
+pip install --upgrade yapf --break-system-packages
 
