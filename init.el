@@ -57,7 +57,9 @@ This function should only modify configuration layer settings."
      (lsp :variables
           lsp-rust-server 'rust-analyzer
           cargo-process-reload-on-modify t
-          lsp-pylsp-plugins-pydocstyle-enabled nil)
+          lsp-pylsp-plugins-pydocstyle-enabled nil
+          lsp-pylsp-plugins-pycodestyle-max-line-length 150
+          lsp-pylsp-plugins-flake8-max-line-length 150)
      ;;; 框架 ---------
      react
      ;;; 源码管理 ------
@@ -78,7 +80,7 @@ This function should only modify configuration layer settings."
              python-sort-imports-on-save t
              python-test-runner '(nose pytest)
              python-backend 'lsp
-             python-lsp-server 'pylsp)
+             python-lsp-server 'ty)
      (go :variables
          go-tab-width 4
          gofmt-command "goimports"
@@ -142,7 +144,7 @@ This function should only modify configuration layer settings."
      go-playground
      rust-playground
      edit-indirect
-     (bazel :location (recipe :fetcher github :repo "bazelbuild/emacs-bazel-mode"))
+     magit-delta
      )
 
    ;; A list of packages that cannot be updated.
@@ -257,7 +259,14 @@ It should only modify the values of Spacemacs settings."
    ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
-   dotspacemacs-startup-banner 'random
+   dotspacemacs-startup-banner 'official
+
+   ;; Scale factor controls the scaling (size) of the startup banner. Default
+   ;; value is `auto' for scaling the logo automatically to fit all buffer
+   ;; contents, to a maximum of the full image height and a minimum of 3 line
+   ;; heights. If set to a number (int or float) it is used as a constant
+   ;; scaling factor for the default logo size.
+   dotspacemacs-startup-banner-scale 'auto
 
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
@@ -281,6 +290,11 @@ It should only modify the values of Spacemacs settings."
    ;; The minimum delay in seconds between number key presses. (default 0.4)
    dotspacemacs-startup-buffer-multi-digit-delay 0.4
 
+   ;; If non-nil, show file icons for entries and headings on Spacemacs home buffer.
+   ;; This has no effect in terminal or if "nerd-icons" package or the font
+   ;; is not installed. (default nil)
+   dotspacemacs-startup-buffer-show-icons nil
+
    ;; Default major mode for a new empty buffer. Possible values are mode
    ;; names such as `text-mode'; and `nil' to use Fundamental mode.
    ;; (default `text-mode')
@@ -303,7 +317,10 @@ It should only modify the values of Spacemacs settings."
 
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
-   ;; with 2 themes variants, one dark and one light)
+   ;; with 2 themes variants, one dark and one light). A theme from external
+   ;; package can be defined with `:package', or a theme can be defined with
+   ;; `:location' to download the theme package, refer the themes section in
+   ;; DOCUMENTATION.org for the full theme specifications.
    dotspacemacs-themes '(spacemacs-dark
                          spacemacs-light)
 
@@ -320,13 +337,18 @@ It should only modify the values of Spacemacs settings."
    ;; (default t)
    dotspacemacs-colorize-cursor-according-to-state t
 
-   ;; Default font or prioritized list of fonts. The `:size' can be specified as
+   ;; Default font or prioritized list of fonts. This setting has no effect when
+   ;; running Emacs in terminal. The font set here will be used for default and
+   ;; fixed-pitch faces. The `:size' can be specified as
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
    dotspacemacs-default-font '("Source Code Pro"
                                :size 14.0
                                :weight normal
                                :width normal)
+
+   ;; Default icons font, it can be `all-the-icons' or `nerd-icons'.
+   dotspacemacs-default-icons-font 'all-the-icons
 
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
@@ -347,10 +369,10 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-major-mode-leader-key ","
 
    ;; Major mode leader key accessible in `emacs state' and `insert state'.
-   ;; (default "C-M-m" for terminal mode, "<M-return>" for GUI mode).
+   ;; (default "C-M-m" for terminal mode, "M-<return>" for GUI mode).
    ;; Thus M-RET should work as leader key in both GUI and terminal modes.
    ;; C-M-m also should work in terminal mode, but not in GUI mode.
-   dotspacemacs-major-mode-emacs-leader-key (if window-system "<M-return>" "C-M-m")
+   dotspacemacs-major-mode-emacs-leader-key (if window-system "M-<return>" "C-M-m")
 
    ;; These variables control whether separate commands are bound in the GUI to
    ;; the key pairs `C-i', `TAB' and `C-m', `RET'.
@@ -401,6 +423,10 @@ It should only modify the values of Spacemacs settings."
    ;; Which-key frame position. Possible values are `right', `bottom' and
    ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
    ;; right; if there is insufficient space it displays it at the bottom.
+   ;; It is also possible to use a posframe with the following cons cell
+   ;; `(posframe . position)' where position can be one of `center',
+   ;; `top-center', `bottom-center', `top-left-corner', `top-right-corner',
+   ;; `top-right-corner', `bottom-left-corner' or `bottom-right-corner'
    ;; (default 'bottom)
    dotspacemacs-which-key-position 'bottom
 
@@ -410,6 +436,30 @@ It should only modify the values of Spacemacs settings."
    ;; displays the buffer in a same-purpose window even if the buffer can be
    ;; displayed in the current window. (default nil)
    dotspacemacs-switch-to-buffer-prefers-purpose nil
+
+   ;; Make consecutive tab key presses after commands such as
+   ;; `spacemacs/alternate-buffer' (SPC TAB) cycle through previous
+   ;; buffers/windows/etc. Please see the option's docstring for more information.
+   ;; Set the option to t in order to enable cycling for all current and
+   ;; future cycling commands. Alternatively, choose a subset of the currently
+   ;; supported commands: '(alternate-buffer alternate-window). (default nil)
+   dotspacemacs-enable-cycling nil
+
+   ;; Whether side windows (such as those created by treemacs or neotree)
+   ;; are kept or minimized by `spacemacs/toggle-maximize-window' (SPC w m).
+   ;; (default t)
+   dotspacemacs-maximize-window-keep-side-windows t
+
+   ;; If nil, no load-hints enabled. If t, enable the `load-hints' which will
+   ;; put the most likely path on the top of `load-path' to reduce walking
+   ;; through the whole `load-path'. It's an experimental feature to speedup
+   ;; Spacemacs on Windows. Refer the FAQ.org "load-hints" session for details.
+   dotspacemacs-enable-load-hints nil
+
+   ;; If t, enable the `package-quickstart' feature to avoid full package
+   ;; loading, otherwise no `package-quickstart' attemption (default nil).
+   ;; Refer the FAQ.org "package-quickstart" section for details.
+   dotspacemacs-enable-package-quickstart nil
 
    ;; If non-nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
@@ -426,12 +476,12 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
-   ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   ;; (default t) (Emacs 24.4+ only)
+   dotspacemacs-maximized-at-startup t
 
    ;; If non-nil the frame is undecorated when Emacs starts up. Combine this
-   ;; variable with `dotspacemacs-maximized-at-startup' in OSX to obtain
-   ;; borderless fullscreen. (default nil)
+   ;; variable with `dotspacemacs-maximized-at-startup' to obtain fullscreen
+   ;; without external boxes. Also disables the internal border. (default nil)
    dotspacemacs-undecorated-at-startup nil
 
    ;; A value from the range (0..100), in increasing opacity, which describes
@@ -443,6 +493,11 @@ It should only modify the values of Spacemacs settings."
    ;; the transparency level of a frame when it's inactive or deselected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
    dotspacemacs-inactive-transparency 90
+
+   ;; A value from the range (0..100), in increasing opacity, which describes the
+   ;; transparency level of a frame background when it's active or selected. Transparency
+   ;; can be toggled through `toggle-background-transparency'. (default 90)
+   dotspacemacs-background-transparency 90
 
    ;; If non-nil show the titles of transient states. (default t)
    dotspacemacs-show-transient-state-title t
@@ -523,9 +578,15 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-persistent-server nil
 
    ;; List of search tool executable names. Spacemacs uses the first installed
-   ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
-   ;; (default '("rg" "ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
+   ;; tool of the list. Supported tools are `rg', `ag', `ack' and `grep'.
+   ;; (default '("rg" "ag" "ack" "grep"))
+   dotspacemacs-search-tools '("rg" "ag" "ack" "grep")
+
+   ;; The backend used for undo/redo functionality. Possible values are
+   ;; `undo-redo', `undo-fu' and `undo-tree' see also `evil-undo-system'.
+   ;; Note that saved undo history does not get transferred when changing
+   ;; your undo system from or to undo-tree. (default `undo-redo')
+   dotspacemacs-undo-system 'undo-redo
 
    ;; Format specification for setting the frame title.
    ;; %a - the `abbreviated-file-name', or `buffer-name'
@@ -553,13 +614,18 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil - same as frame-title-format)
    dotspacemacs-icon-title-format nil
 
-   ;; Show trailing whitespace (default t)
+   ;; Color highlight trailing whitespace in all prog-mode and text-mode derived
+   ;; modes such as c++-mode, python-mode, emacs-lisp, html-mode, rst-mode etc.
+   ;; (default t)
    dotspacemacs-show-trailing-whitespace t
 
    ;; Delete whitespace while saving buffer. Possible values are `all'
    ;; to aggressively delete empty line and long sequences of whitespace,
    ;; `trailing' to delete only the whitespace at end of lines, `changed' to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
+   ;; The variable `global-spacemacs-whitespace-cleanup-modes' controls
+   ;; which major modes have whitespace cleanup enabled or disabled
+   ;; by default.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
 
@@ -707,6 +773,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; improve the ccls performance
   (setq lsp-lens-enable nil)
   (setq lsp-ui-doc-enable nil)
+  ;; Disable lsp-ui-peek to avoid "Assertion failed: window"
+  ;; when pressing Enter after find-definitions. Use xref+ivy instead.
+  (setq lsp-ui-peek-enable nil)
   ;; (setq org-roam-directory (file-truename "~/Dropbox/vault"))
   ;; (setq org-enable-roam-ui t)
   ;; (setq org-enable-org-brain-support t)
@@ -725,6 +794,12 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
+  ;; Fix terminal redisplay: hl-line overlay on CJK/double-width chars
+  ;; causes disappearing/duplicated lines in -nw mode.
+  (unless (display-graphic-p)
+    (global-hl-line-mode -1))
+
   (setq lsp-file-watch-threshold 50000)
   (require 'org-tempo)
   (setq-default tab-width 4)
@@ -734,6 +809,18 @@ before packages are loaded."
   (ido-mode -1)
   (which-function-mode t)
   (setq google-translate-default-target-language "zh-CN")
+
+  ;; ===== Projectile performance optimization =====
+  ;; Cache project files so SPC p f doesn't re-index every time
+  (setq projectile-enable-caching t)
+  ;; NOTE: `projectile-kill-cache-on-project-bury' no longer exists in
+  ;; current projectile (>= 2.8), so the setting below is disabled.
+  ;; (setq projectile-kill-cache-on-project-bury nil)
+  ;; Use fd (much faster than find/git) for indexing in git projects
+  (setq projectile-git-use-fd t)
+  ;; Use the faster alien indexing method (fd, rg, ag)
+  (setq projectile-indexing-method 'alien)
+  ;; =================================================
 
   ;; https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-misc.el
   ;; {{
@@ -940,7 +1027,7 @@ clear all highlight"
         (other-window -1))))                   ; give the attention back to the dired buffer
 
   (add-hook 'lsp-ui-mode-hook
-            (lambda () (lsp-ui-doc-mode -1) (lsp-ui-sideline-mode -1)))
+            (lambda () (lsp-ui-doc-mode -1) (lsp-ui-sideline-mode -1) (lsp-ui-peek-mode -1)))
 
   ;; https://stackoverflow.com/questions/15869131/emacs-shell-command-on-buffer
   (defun shell-command-on-buffer (command)
@@ -1004,12 +1091,38 @@ clear all highlight"
   (with-eval-after-load 'counsel
     (setq counsel-find-file-at-point nil))
 
+  ;; ---- OSC 52 terminal clipboard (works over SSH without X11) ----
+  (unless (display-graphic-p)
+    (defun osc52-copy (text)
+      "Copy TEXT to local terminal clipboard via OSC 52."
+      (let ((b64 (base64-encode-string (encode-coding-string text 'utf-8) t)))
+        (if (or (getenv "TMUX")
+                (string-prefix-p "tmux" (or (getenv "TERM") "")))
+            (send-string-to-terminal
+             (concat "\ePtmux;\e\e]52;c;" b64 "\a\e\\"))
+          (send-string-to-terminal
+           (concat "\e]52;c;" b64 "\e\\")))))
+    ;; Route all clipboard copies through OSC 52
+    (setq interprogram-cut-function #'osc52-copy)
+    ;; Fix SPC x y (spacemacs/xclipboard-copy) to use OSC 52
+    (advice-add 'spacemacs/xclipboard-copy :override
+                (lambda ()
+                  (interactive)
+                  (if (region-active-p)
+                      (progn
+                        (osc52-copy (buffer-substring-no-properties
+                                     (region-beginning) (region-end)))
+                        (deactivate-mark)
+                        (message "Copied region to system clipboard!"))
+                    (message "No region active; can't copy to clipboard!")))))
+
   (defun copy-directory-path-to-xclipboard ()
     (interactive)
     (spacemacs/copy-directory-path)
     ((lambda (sel)
        (when (spacemacs/system-is-mac) (shell-command (format "echo -n %s | pbcopy" (shell-quote-argument sel))))
-       (when (spacemacs/system-is-linux) (shell-command (format "echo -n %s | xsel -ib" (shell-quote-argument sel))))
+       (when (and (spacemacs/system-is-linux) (display-graphic-p))
+         (shell-command (format "echo -n %s | xsel -ib" (shell-quote-argument sel))))
        (prog1 nil (message "Copied to clipboard: %s" sel) (sit-for 1)))(current-kill 0)))
 
   (defun copy-buffer-name-to-xclipboard ()
@@ -1017,13 +1130,18 @@ clear all highlight"
     (spacemacs/copy-buffer-name)
     ((lambda (sel)
        (when (spacemacs/system-is-mac) (shell-command (format "echo -n %s | pbcopy" (shell-quote-argument sel))))
-       (when (spacemacs/system-is-linux) (shell-command (format "echo -n %s | xsel -ib" (shell-quote-argument sel))))
+       (when (and (spacemacs/system-is-linux) (display-graphic-p))
+         (shell-command (format "echo -n %s | xsel -ib" (shell-quote-argument sel))))
        (prog1 nil (message "Copied to clipboard: %s" sel) (sit-for 1)))(current-kill 0)))
 
   (evil-leader/set-key "f x d" 'copy-directory-path-to-xclipboard)
   (evil-leader/set-key "f x f" 'copy-buffer-name-to-xclipboard)
 
   (global-set-key (kbd "C-x o") 'ace-window)
+
+  ;; magit-delta: use delta for magit diffs
+  (add-hook 'magit-mode-hook #'magit-delta-mode)
+  (setq magit-delta-default-dark-theme "Monokai Extended")
   )
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
