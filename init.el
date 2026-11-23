@@ -701,8 +701,15 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq cc-search-directories
         '("../*/include" "../*/inc" "." "/usr/include" "/usr/local/include/*" "../*/src" "../*/source" "$WXWIN/include"))
 
-  (setq split-width-threshold 150)
+  ;; 分屏方式：一律优先左右切分（vertically 的 window，即垂直分割线）。
+  ;; split-width-threshold 必须够小：如果 frame 宽度小于该值，左右切分会被
+  ;; 拒绝，Emacs 随后会「无论如何」切成上下两块（magit-status / SPC g s
+  ;; 就会跑到下方），这就是之前 150 时的问题所在。
+  (setq split-width-threshold 0)
   (setq split-height-threshold nil)
+  ;; Emacs 29+ 用该变量决定先试哪个方向（horizontal = 左右切分）
+  (when (boundp 'split-window-preferred-direction)
+    (setq split-window-preferred-direction 'horizontal))
   (setq ivy-wrap t)
   (setq wgrep-auto-save-buffer t)
 
